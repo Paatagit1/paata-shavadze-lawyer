@@ -3666,18 +3666,3 @@ body {
     }
 
 }
-/* ===== LARGE SCREEN FIX ===== */
-
-@media (min-width: 1600px) {
-    :root {
-        --container: 1500px;
-    }
-
-    .container {
-        width: min(calc(100% - 80px), 1500px);
-    }
-
-    body {
-        font-size: 18px;
-    }
-}
