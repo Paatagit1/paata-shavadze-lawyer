@@ -941,3 +941,408 @@ if (currentYear) {
 
 updateLanguage(getSavedLanguage());
 updateScrollUI();
+/* =========================================================
+   PAATA SHAVADZE — BIOGRAPHY + PAID CONSULTATION UPDATE
+   დაამატე არსებული script.js-ის სულ ბოლოში
+========================================================= */
+
+
+/* =========================================================
+   NEW TRANSLATIONS
+========================================================= */
+
+Object.assign(translations.ka, {
+    fullBiographyButton: "სრული ბიოგრაფიის ნახვა",
+
+    biographyEyebrow: "ადვოკატის შესახებ",
+
+    biographyTitle:
+        "პაატა შავაძის ბიოგრაფია და პროფესიული გზა",
+
+    biographyIntro:
+        "სამართლებრივი, აკადემიური, სამეცნიერო და საზოგადოებრივი საქმიანობის მრავალწლიანი გამოცდილება.",
+
+    biographyExpand:
+        "სრული ბიოგრაფიის გახსნა",
+
+    biographyCollapse:
+        "სრული ბიოგრაფიის დახურვა",
+
+    paidConsultation:
+        "კონსულტაცია ფასიანია • ღირებულება და პირობები შეთანხმდება წინასწარ.",
+
+    paidConsultationShort:
+        "გთხოვთ გაითვალისწინოთ: კონსულტაცია ფასიანია.",
+
+    whatsappMessageTitle:
+        "გამარჯობა, მსურს ფასიანი იურიდიული კონსულტაციის მიღება."
+});
+
+
+Object.assign(translations.en, {
+    fullBiographyButton:
+        "View full biography",
+
+    biographyEyebrow:
+        "About the Attorney",
+
+    biographyTitle:
+        "Biography and Professional Career of Paata Shavadze",
+
+    biographyIntro:
+        "Many years of legal, academic, scientific and public professional experience.",
+
+    biographyExpand:
+        "Open full biography",
+
+    biographyCollapse:
+        "Close full biography",
+
+    paidConsultation:
+        "Consultations are paid • The fee and conditions are agreed in advance.",
+
+    paidConsultationShort:
+        "Please note: the consultation is paid.",
+
+    whatsappMessageTitle:
+        "Hello, I would like to request a paid legal consultation."
+});
+
+
+Object.assign(translations.ru, {
+    fullBiographyButton:
+        "Полная биография",
+
+    biographyEyebrow:
+        "Об адвокате",
+
+    biographyTitle:
+        "Биография и профессиональный путь Пааты Шавадзе",
+
+    biographyIntro:
+        "Многолетний опыт юридической, академической, научной и общественной деятельности.",
+
+    biographyExpand:
+        "Открыть полную биографию",
+
+    biographyCollapse:
+        "Закрыть полную биографию",
+
+    paidConsultation:
+        "Консультация платная • Стоимость и условия согласовываются заранее.",
+
+    paidConsultationShort:
+        "Обратите внимание: консультация платная.",
+
+    whatsappMessageTitle:
+        "Здравствуйте, я хотел(а) бы получить платную юридическую консультацию."
+});
+
+
+/* =========================================================
+   BIOGRAPHY OPEN / CLOSE
+========================================================= */
+
+const bioToggle =
+    document.getElementById("bioToggle");
+
+const bioFull =
+    document.getElementById("bioFull");
+
+
+function updateBiographyButtonText() {
+
+    if (!bioToggle || !bioFull) {
+        return;
+    }
+
+    const textElement =
+        bioToggle.querySelector("[data-i18n='biographyExpand']");
+
+    if (!textElement) {
+        return;
+    }
+
+    const languageContent =
+        translations[currentLanguage] || translations.ka;
+
+    const isOpen =
+        bioToggle.getAttribute("aria-expanded") === "true";
+
+    textElement.textContent =
+        isOpen
+            ? languageContent.biographyCollapse
+            : languageContent.biographyExpand;
+}
+
+
+if (bioToggle && bioFull) {
+
+    bioToggle.addEventListener("click", () => {
+
+        const isCurrentlyOpen =
+            bioToggle.getAttribute("aria-expanded") === "true";
+
+        const newState =
+            !isCurrentlyOpen;
+
+
+        bioToggle.setAttribute(
+            "aria-expanded",
+            String(newState)
+        );
+
+
+        bioToggle.classList.toggle(
+            "open",
+            newState
+        );
+
+
+        bioFull.hidden =
+            !newState;
+
+
+        updateBiographyButtonText();
+
+
+        if (newState) {
+
+            window.setTimeout(() => {
+
+                const biographyTop =
+                    bioToggle.getBoundingClientRect().top +
+                    window.scrollY -
+                    120;
+
+                window.scrollTo({
+                    top: biographyTop,
+                    behavior: "smooth"
+                });
+
+            }, 100);
+        }
+    });
+}
+
+
+/* =========================================================
+   LANGUAGE CHANGE + BIOGRAPHY
+========================================================= */
+
+languageButtons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+
+        window.setTimeout(() => {
+
+            updateBiographyButtonText();
+
+        }, 0);
+
+    });
+
+});
+
+
+/* =========================================================
+   FULL BIOGRAPHY LINK
+========================================================= */
+
+const biographyLink =
+    document.querySelector(".bio-link-button");
+
+
+if (biographyLink && bioToggle && bioFull) {
+
+    biographyLink.addEventListener("click", () => {
+
+        if (
+            bioToggle.getAttribute("aria-expanded") !== "true"
+        ) {
+
+            bioToggle.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            bioToggle.classList.add(
+                "open"
+            );
+
+            bioFull.hidden =
+                false;
+
+            updateBiographyButtonText();
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   PAID CONSULTATION FORM NOTICE
+========================================================= */
+
+if (consultationForm) {
+
+    const paidMessage =
+        document.querySelector(".form-paid-note");
+
+    consultationForm.addEventListener(
+        "focusin",
+        () => {
+
+            if (!paidMessage) {
+                return;
+            }
+
+            paidMessage.classList.add(
+                "highlight"
+            );
+
+        }
+    );
+
+
+    consultationForm.addEventListener(
+        "focusout",
+        () => {
+
+            if (!paidMessage) {
+                return;
+            }
+
+            window.setTimeout(() => {
+
+                if (
+                    !consultationForm.contains(
+                        document.activeElement
+                    )
+                ) {
+
+                    paidMessage.classList.remove(
+                        "highlight"
+                    );
+                }
+
+            }, 50);
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CONTACT FORM — IMPROVED PHONE CLEANUP
+========================================================= */
+
+const phoneInput =
+    consultationForm
+        ? consultationForm.querySelector(
+            "input[name='phone']"
+        )
+        : null;
+
+
+if (phoneInput) {
+
+    phoneInput.addEventListener(
+        "input",
+        () => {
+
+            let value =
+                phoneInput.value;
+
+            value =
+                value.replace(
+                    /[^0-9+\s()-]/g,
+                    ""
+                );
+
+            phoneInput.value =
+                value;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   EXTERNAL RESOURCE LINKS
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".resource-card[target='_blank'], .links-grid a[target='_blank']"
+    )
+    .forEach((link) => {
+
+        if (
+            !link.getAttribute("rel")
+        ) {
+
+            link.setAttribute(
+                "rel",
+                "noopener noreferrer"
+            );
+        }
+
+    });
+
+
+/* =========================================================
+   IMAGE FALLBACK FOR RESOURCE / UPDATE PHOTOS
+========================================================= */
+
+const contentImages =
+    document.querySelectorAll(
+        ".resource-image img, .update-image img, .practice-image img"
+    );
+
+
+contentImages.forEach((image) => {
+
+    image.addEventListener(
+        "error",
+        () => {
+
+            const wrapper =
+                image.parentElement;
+
+            if (!wrapper) {
+                return;
+            }
+
+            wrapper.classList.add(
+                "image-failed"
+            );
+
+            image.style.display =
+                "none";
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   INITIALIZE NEW CONTENT TRANSLATIONS
+========================================================= */
+
+updateLanguage(currentLanguage);
+
+updateBiographyButtonText();
+
+
+/* =========================================================
+   OPTIONAL CONSOLE MESSAGE
+========================================================= */
+
+console.log(
+    "Paata Shavadze website update loaded successfully."
+);
