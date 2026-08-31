@@ -3458,3 +3458,211 @@ body {
             #0d66a5
         );
 }
+/* =========================================================
+   DATABASE CONTENT
+========================================================= */
+
+.database-content-block,
+.database-updates {
+    margin-top: 55px;
+}
+
+.database-section-head,
+.dynamic-group-title {
+    margin-bottom: 22px;
+}
+
+.database-section-head span,
+.dynamic-group-title span {
+    display: inline-block;
+    padding-left: 14px;
+    border-left: 3px solid #f4c542;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.dynamic-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.dynamic-case-card,
+.dynamic-update-card {
+    overflow: hidden;
+    background: linear-gradient(
+        145deg,
+        #07294e,
+        #0a3e6c
+    );
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    box-shadow: 0 20px 50px rgba(0, 15, 35, 0.18);
+}
+
+.dynamic-case-card {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.dynamic-case-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 28px 65px rgba(0, 12, 28, 0.3);
+}
+
+.dynamic-card-image {
+    height: 210px;
+    overflow: hidden;
+}
+
+.dynamic-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.45s ease;
+}
+
+.dynamic-case-card:hover .dynamic-card-image img,
+.dynamic-update-card:hover .dynamic-card-image img {
+    transform: scale(1.045);
+}
+
+.dynamic-card-content {
+    padding: 26px;
+}
+
+.dynamic-card-content h3 {
+    margin: 0 0 14px;
+    color: #ffffff;
+    font-size: 21px;
+    line-height: 1.4;
+}
+
+.dynamic-card-content > p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.73);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.dynamic-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.dynamic-card-meta span {
+    color: #77cef6;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.dynamic-card-meta small {
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 10px;
+}
+
+.case-result {
+    margin-top: 20px;
+    padding: 16px;
+    border-left: 3px solid #f4c542;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.case-result strong {
+    display: block;
+    margin-bottom: 7px;
+    color: #f4c542;
+    font-size: 11px;
+}
+
+.case-result p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.dynamic-update-group {
+    margin-top: 45px;
+}
+
+.dynamic-update-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.dynamic-update-card {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.dynamic-update-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 27px 60px rgba(0, 12, 28, 0.28);
+}
+
+.dynamic-file-button {
+    display: inline-flex;
+    margin-top: 20px;
+    padding: 11px 15px;
+    background: #f4c542;
+    color: #061b35;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 900;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.dynamic-file-button:hover {
+    background: #ffda62;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 980px) {
+
+    .dynamic-cases-grid,
+    .dynamic-update-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .dynamic-cases-grid,
+    .dynamic-update-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dynamic-card-image {
+        height: 200px;
+    }
+
+    .dynamic-card-content {
+        padding: 22px;
+    }
+
+    .dynamic-card-content h3 {
+        font-size: 19px;
+    }
+
+}

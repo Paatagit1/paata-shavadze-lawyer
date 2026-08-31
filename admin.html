@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ka">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>
+        ადმინისტრაციული პანელი | პაატა შავაძე
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="admin.css"
+    >
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        defer
+    ></script>
+
+    <script
+        src="admin.js"
+        defer
+    ></script>
+</head>
+
+
+<body>
+
+    <!-- =========================================
+         LOGIN
+    ========================================== -->
+
+    <main
+        class="login-screen"
+        id="loginScreen"
+    >
+
+        <section class="login-card">
+
+            <div class="admin-logo">
+                PS
+            </div>
+
+
+            <p class="login-eyebrow">
+                PAATA SHAVADZE
+            </p>
+
+
+            <h1>
+                ადმინისტრაციული პანელი
+            </h1>
+
+
+            <p class="login-description">
+                შედით საიტის მასალების სამართავად.
+            </p>
+
+
+            <form id="loginForm">
+
+                <label>
+
+                    <span>
+                        ელფოსტა
+                    </span>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        autocomplete="email"
+                        required
+                    >
+
+                </label>
+
+
+                <label>
+
+                    <span>
+                        პაროლი
+                    </span>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </label>
+
+
+                <button
+                    class="primary-button"
+                    type="submit"
+                >
+                    შესვლა
+                </button>
+
+
+                <p
+                    class="form-status"
+                    id="loginStatus"
+                ></p>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================
+         ADMIN DASHBOARD
+    ========================================== -->
+
+    <div
+        class="admin-app"
+        id="adminApp"
+        hidden
+    >
+
+        <!-- SIDEBAR -->
+
+        <aside class="admin-sidebar">
+
+            <div class="sidebar-brand">
+
+                <div class="sidebar-logo">
+                    PS
+                </div>
+
+                <div>
+
+                    <strong>
+                        პაატა შავაძე
+                    </strong>
+
+                    <small>
+                        Administration
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <nav class="admin-navigation">
+
+                <button
+                    class="admin-nav-button active"
+                    data-panel="dashboardPanel"
+                    type="button"
+                >
+                    მთავარი
+                </button>
+
+
+                <button
+                    class="admin-nav-button"
+                    data-panel="casesPanel"
+                    type="button"
+                >
+                    წარმატებული საქმეები
+                </button>
+
+
+                <button
+                    class="admin-nav-button"
+                    data-panel="newsPanel"
+                    type="button"
+                >
+                    სიახლეები
+                </button>
+
+
+                <button
+                    class="admin-nav-button"
+                    data-panel="vacanciesPanel"
+                    type="button"
+                >
+                    ვაკანსიები
+                </button>
+
+
+                <button
+                    class="admin-nav-button"
+                    data-panel="publicationsPanel"
+                    type="button"
+                >
+                    პუბლიკაციები
+                </button>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a
+                    href="index.html"
+                    target="_blank"
+                >
+                    საიტის ნახვა
+                </a>
+
+
+                <button
+                    id="logoutButton"
+                    type="button"
+                >
+                    გამოსვლა
+                </button>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="admin-main">
+
+            <header class="admin-header">
+
+                <div>
+
+                    <p>
+                        ADMINISTRATION
+                    </p>
+
+                    <h2 id="adminPageTitle">
+                        მთავარი
+                    </h2>
+
+                </div>
+
+
+                <div class="admin-user">
+
+                    <span>
+                        ავტორიზებული
+                    </span>
+
+                    <strong id="adminEmail">
+                        —
+                    </strong>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =========================================
+                 DASHBOARD
+            ========================================== -->
+
+            <section
+                class="admin-panel active"
+                id="dashboardPanel"
+            >
+
+                <div class="dashboard-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            მიმოხილვა
+                        </p>
+
+                        <h3>
+                            საიტის მართვა
+                        </h3>
+
+                    </div>
+
+                    <p>
+                        აქედან შეძლებთ საიტის ძირითადი
+                        მასალების მართვას კოდის შეცვლის გარეშე.
+                    </p>
+
+                </div>
+
+
+                <div class="stats-grid">
+
+                    <article class="stat-card">
+
+                        <span>
+                            წარმატებული საქმეები
+                        </span>
+
+                        <strong id="casesCount">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <span>
+                            სიახლეები
+                        </span>
+
+                        <strong id="newsCount">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <span>
+                            ვაკანსიები
+                        </span>
+
+                        <strong id="vacanciesCount">
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <article class="stat-card">
+
+                        <span>
+                            პუბლიკაციები
+                        </span>
+
+                        <strong id="publicationsCount">
+                            0
+                        </strong>
+
+                    </article>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================================
+                 CASES
+            ========================================== -->
+
+            <section
+                class="admin-panel"
+                id="casesPanel"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            საქმეები
+                        </p>
+
+                        <h3>
+                            წარმატებული საქმეები
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="primary-button add-button"
+                        type="button"
+                        data-form-toggle="caseFormCard"
+                    >
+                        + ახალი საქმე
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="editor-card"
+                    id="caseFormCard"
+                    hidden
+                >
+
+                    <div class="editor-heading">
+
+                        <h4 id="caseFormTitle">
+                            ახალი საქმის დამატება
+                        </h4>
+
+                        <button
+                            class="close-editor"
+                            type="button"
+                            data-form-close="caseFormCard"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <form id="caseForm">
+
+                        <input
+                            type="hidden"
+                            id="caseId"
+                        >
+
+
+                        <label>
+
+                            <span>
+                                სათაური
+                            </span>
+
+                            <input
+                                type="text"
+                                id="caseTitle"
+                                required
+                            >
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                კატეგორია
+                            </span>
+
+                            <select
+                                id="caseCategory"
+                                required
+                            >
+
+                                <option value="სისხლის სამართალი">
+                                    სისხლის სამართალი
+                                </option>
+
+                                <option value="სამოქალაქო სამართალი">
+                                    სამოქალაქო სამართალი
+                                </option>
+
+                                <option value="ადმინისტრაციული სამართალი">
+                                    ადმინისტრაციული სამართალი
+                                </option>
+
+                            </select>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                საქმის აღწერა
+                            </span>
+
+                            <textarea
+                                id="caseDescription"
+                                rows="6"
+                                required
+                            ></textarea>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                მიღწეული შედეგი
+                            </span>
+
+                            <textarea
+                                id="caseResult"
+                                rows="4"
+                            ></textarea>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                ფოტო
+                            </span>
+
+                            <input
+                                type="file"
+                                id="caseImage"
+                                accept="image/*"
+                            >
+
+                        </label>
+
+
+                        <label class="checkbox-row">
+
+                            <input
+                                type="checkbox"
+                                id="casePublished"
+                                checked
+                            >
+
+                            <span>
+                                გამოქვეყნდეს საიტზე
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            class="primary-button"
+                            type="submit"
+                        >
+                            შენახვა
+                        </button>
+
+
+                        <p
+                            class="form-status"
+                            id="caseStatus"
+                        ></p>
+
+                    </form>
+
+                </div>
+
+
+                <div
+                    class="content-list"
+                    id="casesList"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =========================================
+                 NEWS
+            ========================================== -->
+
+            <section
+                class="admin-panel"
+                id="newsPanel"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            მედია
+                        </p>
+
+                        <h3>
+                            სიახლეები
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="primary-button add-button"
+                        type="button"
+                        data-form-toggle="newsFormCard"
+                    >
+                        + ახალი სიახლე
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="editor-card"
+                    id="newsFormCard"
+                    hidden
+                >
+
+                    <div class="editor-heading">
+
+                        <h4>
+                            ახალი სიახლის დამატება
+                        </h4>
+
+                        <button
+                            class="close-editor"
+                            type="button"
+                            data-form-close="newsFormCard"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <form id="newsForm">
+
+                        <input
+                            type="hidden"
+                            id="newsId"
+                        >
+
+
+                        <label>
+
+                            <span>
+                                სათაური
+                            </span>
+
+                            <input
+                                type="text"
+                                id="newsTitle"
+                                required
+                            >
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                აღწერა
+                            </span>
+
+                            <textarea
+                                id="newsDescription"
+                                rows="6"
+                                required
+                            ></textarea>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                ფოტო
+                            </span>
+
+                            <input
+                                type="file"
+                                id="newsImage"
+                                accept="image/*"
+                            >
+
+                        </label>
+
+
+                        <label class="checkbox-row">
+
+                            <input
+                                type="checkbox"
+                                id="newsPublished"
+                                checked
+                            >
+
+                            <span>
+                                გამოქვეყნდეს საიტზე
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            class="primary-button"
+                            type="submit"
+                        >
+                            შენახვა
+                        </button>
+
+
+                        <p
+                            class="form-status"
+                            id="newsStatus"
+                        ></p>
+
+                    </form>
+
+                </div>
+
+
+                <div
+                    class="content-list"
+                    id="newsList"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =========================================
+                 VACANCIES
+            ========================================== -->
+
+            <section
+                class="admin-panel"
+                id="vacanciesPanel"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            კარიერა
+                        </p>
+
+                        <h3>
+                            ვაკანსიები
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="primary-button add-button"
+                        type="button"
+                        data-form-toggle="vacancyFormCard"
+                    >
+                        + ახალი ვაკანსია
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="editor-card"
+                    id="vacancyFormCard"
+                    hidden
+                >
+
+                    <div class="editor-heading">
+
+                        <h4>
+                            ახალი ვაკანსიის დამატება
+                        </h4>
+
+                        <button
+                            class="close-editor"
+                            type="button"
+                            data-form-close="vacancyFormCard"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <form id="vacancyForm">
+
+                        <input
+                            type="hidden"
+                            id="vacancyId"
+                        >
+
+
+                        <label>
+
+                            <span>
+                                პოზიცია / სათაური
+                            </span>
+
+                            <input
+                                type="text"
+                                id="vacancyTitle"
+                                required
+                            >
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                აღწერა
+                            </span>
+
+                            <textarea
+                                id="vacancyDescription"
+                                rows="7"
+                                required
+                            ></textarea>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                ფოტო
+                            </span>
+
+                            <input
+                                type="file"
+                                id="vacancyImage"
+                                accept="image/*"
+                            >
+
+                        </label>
+
+
+                        <label class="checkbox-row">
+
+                            <input
+                                type="checkbox"
+                                id="vacancyPublished"
+                                checked
+                            >
+
+                            <span>
+                                გამოქვეყნდეს საიტზე
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            class="primary-button"
+                            type="submit"
+                        >
+                            შენახვა
+                        </button>
+
+
+                        <p
+                            class="form-status"
+                            id="vacancyStatus"
+                        ></p>
+
+                    </form>
+
+                </div>
+
+
+                <div
+                    class="content-list"
+                    id="vacanciesList"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =========================================
+                 PUBLICATIONS
+            ========================================== -->
+
+            <section
+                class="admin-panel"
+                id="publicationsPanel"
+            >
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            ნაშრომები
+                        </p>
+
+                        <h3>
+                            პუბლიკაციები
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="primary-button add-button"
+                        type="button"
+                        data-form-toggle="publicationFormCard"
+                    >
+                        + ახალი პუბლიკაცია
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="editor-card"
+                    id="publicationFormCard"
+                    hidden
+                >
+
+                    <div class="editor-heading">
+
+                        <h4>
+                            ახალი პუბლიკაციის დამატება
+                        </h4>
+
+                        <button
+                            class="close-editor"
+                            type="button"
+                            data-form-close="publicationFormCard"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+
+                    <form id="publicationForm">
+
+                        <input
+                            type="hidden"
+                            id="publicationId"
+                        >
+
+
+                        <label>
+
+                            <span>
+                                სათაური
+                            </span>
+
+                            <input
+                                type="text"
+                                id="publicationTitle"
+                                required
+                            >
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                აღწერა
+                            </span>
+
+                            <textarea
+                                id="publicationDescription"
+                                rows="6"
+                            ></textarea>
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                მთავარი ფოტო
+                            </span>
+
+                            <input
+                                type="file"
+                                id="publicationImage"
+                                accept="image/*"
+                            >
+
+                        </label>
+
+
+                        <label>
+
+                            <span>
+                                პუბლიკაციის ფაილი
+                            </span>
+
+                            <input
+                                type="file"
+                                id="publicationFile"
+                                accept=".pdf,.doc,.docx"
+                            >
+
+                        </label>
+
+
+                        <label class="checkbox-row">
+
+                            <input
+                                type="checkbox"
+                                id="publicationPublished"
+                                checked
+                            >
+
+                            <span>
+                                გამოქვეყნდეს საიტზე
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            class="primary-button"
+                            type="submit"
+                        >
+                            შენახვა
+                        </button>
+
+
+                        <p
+                            class="form-status"
+                            id="publicationStatus"
+                        ></p>
+
+                    </form>
+
+                </div>
+
+
+                <div
+                    class="content-list"
+                    id="publicationsList"
+                ></div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
