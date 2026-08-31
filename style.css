@@ -3458,3 +3458,979 @@ body {
             #0d66a5
         );
 }
+/* =========================================================
+   SUCCESSFUL CASES — RESPONSIVE GRID
+========================================================= */
+/* =========================================================
+   SUCCESSFUL CASES — PREMIUM SINGLE CARD
+========================================================= */
+
+/* როდესაც მხოლოდ 1 საქმეა */
+#dynamicCases:has(.case-card:only-child) {
+    display: flex;
+    justify-content: center;
+}
+
+#dynamicCases:has(.case-card:only-child) .case-card {
+    width: min(100%, 900px);
+    min-height: 260px;
+
+    padding: 34px 38px;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0 auto;
+}
+
+/* კატეგორია + ნომერი */
+#dynamicCases:has(.case-card:only-child) .case-topline {
+    width: 100%;
+    margin-bottom: 28px;
+}
+
+/* საქმის სათაური */
+#dynamicCases:has(.case-card:only-child) .case-card h3 {
+    max-width: 720px;
+    margin-bottom: 14px;
+}
+
+/* აღწერა */
+#dynamicCases:has(.case-card:only-child) .case-card p {
+    max-width: 720px;
+    line-height: 1.75;
+    margin-bottom: 28px;
+}
+
+/* შედეგის ღილაკი/ნიშანი */
+#dynamicCases:has(.case-card:only-child) .status-pill {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+/* Tablet */
+@media (max-width: 980px) {
+    #dynamicCases:has(.case-card:only-child) .case-card {
+        width: 100%;
+        min-height: auto;
+        padding: 30px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 680px) {
+    #dynamicCases:has(.case-card:only-child) .case-card {
+        padding: 24px 20px;
+    }
+
+    #dynamicCases:has(.case-card:only-child) .case-topline {
+        margin-bottom: 20px;
+    }
+}
+#dynamicCases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+
+/* 1 card */
+#dynamicCases:has(.case-card:only-child) {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+#dynamicCases:has(.case-card:only-child) .case-card {
+    width: 100%;
+    max-width: none;
+}
+
+
+/* 2 cards */
+#dynamicCases:has(.case-card:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+
+/* 3+ cards */
+#dynamicCases:has(.case-card:nth-child(3)) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+
+/* Make cards fill their grid cells */
+#dynamicCases .case-card {
+    height: 100%;
+    width: 100%;
+}
+
+
+/* Tablet */
+@media (max-width: 980px) {
+    #dynamicCases,
+    #dynamicCases:has(.case-card:nth-child(3)),
+    #dynamicCases:has(.case-card:nth-child(2):last-child) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #dynamicCases:has(.case-card:only-child) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+
+/* Mobile */
+@media (max-width: 680px) {
+    #dynamicCases,
+    #dynamicCases:has(.case-card:nth-child(3)),
+    #dynamicCases:has(.case-card:nth-child(2):last-child),
+    #dynamicCases:has(.case-card:only-child) {
+        grid-template-columns: 1fr;
+    }
+}
+/* =========================================================
+   SUCCESSFUL CASES — PREMIUM SINGLE CARD LAYOUT
+========================================================= */
+
+/* საერთო ბარათი */
+#dynamicCases .case-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    padding: 34px 36px;
+}
+
+
+/* 1 საქმე — პრემიუმ ჰორიზონტალური ბარათი */
+#dynamicCases:has(.case-card:only-child) .case-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.7fr);
+    grid-template-areas:
+        "topline topline"
+        "title result"
+        "description result";
+    column-gap: 48px;
+    row-gap: 18px;
+    align-items: start;
+}
+
+
+/* ზედა ხაზი */
+#dynamicCases:has(.case-card:only-child) .case-topline {
+    grid-area: topline;
+    margin-bottom: 8px;
+}
+
+
+/* სათაური */
+#dynamicCases:has(.case-card:only-child) .case-card h3 {
+    grid-area: title;
+    max-width: 700px;
+    margin: 0;
+    font-size: clamp(1.55rem, 2vw, 2.3rem);
+    line-height: 1.2;
+}
+
+
+/* აღწერა */
+#dynamicCases:has(.case-card:only-child) .case-card p {
+    grid-area: description;
+    max-width: 760px;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+
+/* შედეგის ბეჯი */
+#dynamicCases:has(.case-card:only-child) .status-pill {
+    grid-area: result;
+    align-self: center;
+    justify-self: end;
+    width: fit-content;
+    max-width: 260px;
+    padding: 12px 18px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+
+/* რბილი დეკორატიული ეფექტი */
+#dynamicCases:has(.case-card:only-child) .case-card::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -80px;
+    bottom: -100px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+
+/* 2 საქმე */
+#dynamicCases:has(.case-card:nth-child(2):last-child) .case-card {
+    min-height: 300px;
+    padding: 30px;
+}
+
+
+/* 3+ საქმე */
+#dynamicCases:has(.case-card:nth-child(3)) .case-card {
+    min-height: 320px;
+    padding: 28px;
+}
+
+
+/* Tablet */
+@media (max-width: 980px) {
+    #dynamicCases:has(.case-card:only-child) .case-card {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "topline"
+            "title"
+            "description"
+            "result";
+        row-gap: 18px;
+    }
+
+    #dynamicCases:has(.case-card:only-child) .status-pill {
+        justify-self: start;
+    }
+}
+
+
+/* Mobile */
+@media (max-width: 680px) {
+    #dynamicCases .case-card {
+        min-height: auto;
+        padding: 24px 22px;
+    }
+
+    #dynamicCases:has(.case-card:only-child) .case-card h3 {
+        font-size: 1.5rem;
+    }
+
+    #dynamicCases:has(.case-card:only-child) .case-card p {
+        font-size: 0.96rem;
+        line-height: 1.65;
+    }
+}
+/* =========================================================
+   NEWS / VACANCIES / PUBLICATIONS — PREMIUM CARDS
+========================================================= */
+
+.updates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.updates-grid .update-card {
+    height: 100%;
+    min-height: 520px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+.updates-grid .update-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+}
+
+.updates-grid .update-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    transition:
+        transform 0.45s ease,
+        filter 0.45s ease;
+}
+
+.updates-grid .update-card:hover .update-image img {
+    transform: scale(1.04);
+}
+
+
+/* ზედა პატარა ხაზი — ნომერი / კატეგორია */
+
+.updates-grid .update-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 24px;
+}
+
+.updates-grid .update-card-head span {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    opacity: 0.9;
+}
+
+.updates-grid .update-card-head small {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+
+/* სათაური */
+
+.updates-grid .update-card h3 {
+    margin-bottom: 14px;
+
+    line-height: 1.25;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* აღწერა */
+
+.updates-grid .update-card > p {
+    line-height: 1.7;
+
+    margin-bottom: 26px;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ქვედა ღილაკი ყოველთვის ერთ ხაზზე დაჯდეს */
+
+.updates-grid .update-card > .status-pill,
+.updates-grid .update-card > a.status-pill {
+    margin-top: auto;
+    align-self: flex-start;
+
+    text-decoration: none;
+}
+
+
+/* Hover */
+
+.updates-grid .update-card {
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.updates-grid .update-card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* 4+ ბარათზე შემდეგ ხაზზე გადავიდეს */
+
+@media (max-width: 1100px) {
+    .updates-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+    .updates-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .updates-grid .update-card {
+        min-height: auto;
+    }
+}
+/* =========================================================
+   UPDATES — PREMIUM CARD POLISH
+========================================================= */
+
+.updates-grid {
+    align-items: stretch;
+}
+
+.updates-grid .update-card {
+    height: 100%;
+    min-height: 520px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+/* ყველა ფოტო ერთი ზომის */
+.updates-grid .update-image {
+    height: 240px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.updates-grid .update-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ზედა ნომერი / კატეგორია */
+.updates-grid .update-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 26px;
+}
+
+.updates-grid .update-card-head span {
+    min-width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.updates-grid .update-card-head small {
+    padding: 8px 12px;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+
+    font-weight: 700;
+}
+
+/* სათაურები ერთნაირად ლაგდება */
+.updates-grid .update-card h3 {
+    min-height: 70px;
+
+    margin-bottom: 14px;
+
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+/* აღწერა */
+.updates-grid .update-card p {
+    margin-bottom: 28px;
+    line-height: 1.7;
+
+    overflow-wrap: anywhere;
+}
+
+/* ღილაკი ყოველთვის ქვემოთ */
+.updates-grid .update-card > .status-pill,
+.updates-grid .update-card > a.status-pill {
+    margin-top: auto;
+    align-self: flex-start;
+}
+
+/* მობილური */
+@media (max-width: 680px) {
+    .updates-grid .update-card {
+        min-height: auto;
+    }
+
+    .updates-grid .update-image {
+        height: 210px;
+    }
+
+    .updates-grid .update-card h3 {
+        min-height: auto;
+    }
+}
+/* =========================================================
+   VACANCY APPLY BUTTON
+========================================================= */
+
+.vacancy-apply-button {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.vacancy-apply-button:hover {
+    transform: translateY(-2px);
+}
+/* =========================================================
+   MOBILE FINAL FIX
+   MENU + HERO + HORIZONTAL OVERFLOW
+========================================================= */
+
+@media (max-width: 680px) {
+
+    /* =========================================
+       PAGE WIDTH FIX
+    ========================================= */
+
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden !important;
+    }
+
+    body {
+        position: relative;
+    }
+
+
+    /* =========================================
+       MOBILE MENU
+       დახურულ მდგომარეობაში საერთოდ ქრება
+    ========================================= */
+
+    .main-navigation,
+    .site-header.scrolled .main-navigation {
+        display: none !important;
+
+        position: fixed;
+
+        top: 102px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        z-index: 5000;
+
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto;
+
+        margin: 0;
+        padding: 20px 20px 32px;
+
+        transform: none !important;
+
+        background: var(--white);
+
+        box-shadow: none;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+
+    /*
+       როცა Header უკვე ზემოთ არის მიწებებული,
+       topbar აღარ არის ეკრანზე
+    */
+
+    .site-header.scrolled .main-navigation {
+        top: 68px;
+    }
+
+
+    /* გახსნილი მენიუ */
+
+    .main-navigation.open {
+        display: flex !important;
+
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+
+        gap: 0;
+    }
+
+
+    /* მენიუს ბმულები */
+
+    .main-navigation a {
+        width: 100%;
+
+        min-height: 56px;
+
+        display: flex;
+        align-items: center;
+
+        padding: 14px 4px;
+
+        border-bottom: 1px solid var(--line);
+
+        font-size: 14px;
+        line-height: 1.35;
+
+        white-space: normal;
+    }
+
+
+    /*
+       მენიუს scrollbar მუშაობს,
+       მაგრამ ვიზუალურად აღარ ტოვებს
+       იმ დიდ თეთრ ზოლს
+    */
+
+    .main-navigation {
+        scrollbar-width: none;
+    }
+
+    .main-navigation::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+
+    /* =========================================
+       HAMBURGER BUTTON
+    ========================================= */
+
+    .mobile-menu-button {
+        position: relative;
+
+        z-index: 5100;
+
+        flex: 0 0 44px;
+
+        width: 44px;
+        height: 44px;
+
+        touch-action: manipulation;
+
+        -webkit-tap-highlight-color: transparent;
+    }
+
+
+    /* =========================================
+       LOCK BODY WHEN MENU IS OPEN
+    ========================================= */
+
+    body.menu-open {
+        overflow: hidden !important;
+    }
+
+
+    /* =========================================
+       HERO WIDTH FIX
+    ========================================= */
+
+    .hero,
+    .hero-content,
+    .hero-copy {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .hero-copy {
+        width: 100%;
+    }
+
+
+    /* მთავარი სათაური */
+
+    .hero h1 {
+        width: 100%;
+        max-width: 100%;
+
+        margin-right: 0;
+
+        font-size: clamp(
+            34px,
+            10vw,
+            44px
+        );
+
+        line-height: 1.1;
+
+        letter-spacing: -0.025em;
+
+        overflow-wrap: anywhere;
+
+        word-break: normal;
+    }
+
+
+    /* ზედა პატარა ტექსტი */
+
+    .eyebrow {
+        width: 100%;
+        max-width: 100%;
+
+        align-items: flex-start;
+    }
+
+    .eyebrow > span:last-child {
+        min-width: 0;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* პროფესიული სტატუსი */
+
+    .hero-credential {
+        width: 100%;
+        max-width: 100%;
+
+        padding-left: 14px;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* აღწერა */
+
+    .hero-text {
+        width: 100%;
+        max-width: 100%;
+
+        font-size: 14px;
+
+        line-height: 1.7;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =========================================
+       HERO BUTTONS
+    ========================================= */
+
+    .hero-actions {
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+    .hero-actions .button {
+        width: 100%;
+        max-width: 100%;
+
+        justify-content: center;
+
+        text-align: center;
+    }
+
+
+    /* =========================================
+       TRUST TAGS
+    ========================================= */
+
+    .hero-trust {
+        width: 100%;
+        max-width: 100%;
+
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 8px;
+    }
+
+    .hero-trust span {
+        max-width: 100%;
+
+        white-space: normal;
+
+        overflow-wrap: anywhere;
+    }
+}
+/* =========================================================
+   MOBILE MENU — FINAL WORKING OVERRIDE
+========================================================= */
+
+@media (max-width: 680px) {
+
+    /*
+       fixed მენიუს სწორად მუშაობისთვის
+    */
+    .site-header,
+    .site-header.scrolled {
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    }
+
+
+    /* =========================================
+       MENU PANEL
+    ========================================= */
+
+    .main-navigation,
+    .site-header.scrolled .main-navigation {
+
+        display: flex !important;
+
+        position: fixed !important;
+
+        top: 102px !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        margin: 0 !important;
+
+        padding: 22px 22px 40px !important;
+
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+
+        gap: 0 !important;
+
+        background:
+            linear-gradient(
+                160deg,
+                var(--sky-deep),
+                #063b59
+            ) !important;
+
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+
+        transform: translateY(-10px) !important;
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.22s ease,
+            visibility 0.2s ease !important;
+
+        z-index: 9999 !important;
+
+        box-shadow:
+            0 25px 60px
+            rgba(0, 40, 65, 0.28) !important;
+    }
+
+
+    /*
+       როცა გვერდი ჩამოსქროლილია,
+       ზედა ლურჯი topbar აღარ ითვლება
+    */
+
+    .site-header.scrolled .main-navigation {
+        top: 68px !important;
+    }
+
+
+    /* =========================================
+       OPEN STATE
+    ========================================= */
+
+    .main-navigation.open {
+
+        opacity: 1 !important;
+
+        visibility: visible !important;
+
+        pointer-events: auto !important;
+
+        transform: translateY(0) !important;
+    }
+
+
+    /* =========================================
+       MENU LINKS
+    ========================================= */
+
+    .main-navigation a {
+
+        display: flex !important;
+
+        width: 100% !important;
+
+        min-height: 60px;
+
+        align-items: center;
+
+        padding: 16px 4px !important;
+
+        border-bottom:
+            1px solid
+            rgba(255, 255, 255, 0.16) !important;
+
+        color: #ffffff !important;
+
+        font-size: 15px !important;
+
+        font-weight: 700 !important;
+
+        line-height: 1.4 !important;
+
+        letter-spacing: 0.01em;
+
+        white-space: normal !important;
+
+        opacity: 1 !important;
+
+        visibility: visible !important;
+
+        transform: none !important;
+    }
+
+
+    .main-navigation a:hover,
+    .main-navigation a.active {
+        color: var(--yellow) !important;
+    }
+
+
+    .main-navigation a::after {
+        display: none !important;
+    }
+
+
+    /* =========================================
+       HAMBURGER
+    ========================================= */
+
+    .mobile-menu-button {
+
+        position: relative !important;
+
+        z-index: 10001 !important;
+
+        flex: 0 0 44px;
+
+        width: 44px;
+        height: 44px;
+
+        touch-action: manipulation;
+
+        -webkit-tap-highlight-color:
+            transparent;
+    }
+
+
+    /* =========================================
+       BODY LOCK
+    ========================================= */
+
+    body.menu-open {
+        overflow: hidden !important;
+    }
+}

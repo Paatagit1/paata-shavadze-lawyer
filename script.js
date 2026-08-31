@@ -204,9 +204,7 @@ const translations = {
         footerCredential: "ადვოკატი • სამართლის დოქტორი • პროფესორი • აკადემიკოსი",
         rights: "ყველა უფლება დაცულია.",
         legalNotice: "ვებგვერდზე განთავსებული ზოგადი ინფორმაცია არ წარმოადგენს ინდივიდუალურ სამართლებრივ კონსულტაციას."
-    },
-
-    en: {
+    },    en: {
         pageTitle: "Paata Shavadze | Attorney",
         skipLink: "Skip to main content",
         topbarNote: "Consultations by prior appointment",
@@ -565,8 +563,7 @@ const translations = {
 
         faqFourQuestion: "Сохраняется ли конфиденциальность информации?",
         faqFourAnswer: "Информация, предоставленная в рамках профессиональных отношений с адвокатом, обрабатывается с соблюдением принципа конфиденциальности.",
-
-        faqFiveQuestion: "Можно ли заранее гарантировать результат дела?",
+                faqFiveQuestion: "Можно ли заранее гарантировать результат дела?",
         faqFiveAnswer: "Нет. Возможные пути и риски оцениваются на основании материалов дела, однако конкретный результат не может быть гарантирован.",
 
         linksEyebrow: "Полезные ссылки",
@@ -923,9 +920,7 @@ if (consultationForm) {
 
         if (formStatus) {
             formStatus.textContent = content.formOpening;
-        }
-
-        window.open(
+        }        window.open(
             whatsappUrl,
             "_blank",
             "noopener,noreferrer"
@@ -941,9 +936,10 @@ if (currentYear) {
 
 updateLanguage(getSavedLanguage());
 updateScrollUI();
+
+
 /* =========================================================
    PAATA SHAVADZE — BIOGRAPHY + PAID CONSULTATION UPDATE
-   დაამატე არსებული script.js-ის სულ ბოლოში
 ========================================================= */
 
 
@@ -1057,17 +1053,22 @@ function updateBiographyButtonText() {
     }
 
     const textElement =
-        bioToggle.querySelector("[data-i18n='biographyExpand']");
+        bioToggle.querySelector(
+            "[data-i18n='biographyExpand']"
+        );
 
     if (!textElement) {
         return;
     }
 
     const languageContent =
-        translations[currentLanguage] || translations.ka;
+        translations[currentLanguage] ||
+        translations.ka;
 
     const isOpen =
-        bioToggle.getAttribute("aria-expanded") === "true";
+        bioToggle.getAttribute(
+            "aria-expanded"
+        ) === "true";
 
     textElement.textContent =
         isOpen
@@ -1078,51 +1079,56 @@ function updateBiographyButtonText() {
 
 if (bioToggle && bioFull) {
 
-    bioToggle.addEventListener("click", () => {
+    bioToggle.addEventListener(
+        "click",
+        () => {
 
-        const isCurrentlyOpen =
-            bioToggle.getAttribute("aria-expanded") === "true";
+            const isCurrentlyOpen =
+                bioToggle.getAttribute(
+                    "aria-expanded"
+                ) === "true";
 
-        const newState =
-            !isCurrentlyOpen;
+            const newState =
+                !isCurrentlyOpen;
 
+            bioToggle.setAttribute(
+                "aria-expanded",
+                String(newState)
+            );
 
-        bioToggle.setAttribute(
-            "aria-expanded",
-            String(newState)
-        );
+            bioToggle.classList.toggle(
+                "open",
+                newState
+            );
 
+            bioFull.hidden =
+                !newState;
 
-        bioToggle.classList.toggle(
-            "open",
-            newState
-        );
+            updateBiographyButtonText();
 
+            if (newState) {
 
-        bioFull.hidden =
-            !newState;
+                window.setTimeout(
+                    () => {
 
+                        const biographyTop =
+                            bioToggle
+                                .getBoundingClientRect()
+                                .top +
+                            window.scrollY -
+                            120;
 
-        updateBiographyButtonText();
+                        window.scrollTo({
+                            top: biographyTop,
+                            behavior: "smooth"
+                        });
 
-
-        if (newState) {
-
-            window.setTimeout(() => {
-
-                const biographyTop =
-                    bioToggle.getBoundingClientRect().top +
-                    window.scrollY -
-                    120;
-
-                window.scrollTo({
-                    top: biographyTop,
-                    behavior: "smooth"
-                });
-
-            }, 100);
+                    },
+                    100
+                );
+            }
         }
-    });
+    );
 }
 
 
@@ -1132,15 +1138,19 @@ if (bioToggle && bioFull) {
 
 languageButtons.forEach((button) => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+        "click",
+        () => {
 
-        window.setTimeout(() => {
+            window.setTimeout(
+                () => {
+                    updateBiographyButtonText();
+                },
+                0
+            );
 
-            updateBiographyButtonText();
-
-        }, 0);
-
-    });
+        }
+    );
 
 });
 
@@ -1150,33 +1160,44 @@ languageButtons.forEach((button) => {
 ========================================================= */
 
 const biographyLink =
-    document.querySelector(".bio-link-button");
+    document.querySelector(
+        ".bio-link-button"
+    );
 
 
-if (biographyLink && bioToggle && bioFull) {
+if (
+    biographyLink &&
+    bioToggle &&
+    bioFull
+) {
 
-    biographyLink.addEventListener("click", () => {
+    biographyLink.addEventListener(
+        "click",
+        () => {
 
-        if (
-            bioToggle.getAttribute("aria-expanded") !== "true"
-        ) {
+            if (
+                bioToggle.getAttribute(
+                    "aria-expanded"
+                ) !== "true"
+            ) {
 
-            bioToggle.setAttribute(
-                "aria-expanded",
-                "true"
-            );
+                bioToggle.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
 
-            bioToggle.classList.add(
-                "open"
-            );
+                bioToggle.classList.add(
+                    "open"
+                );
 
-            bioFull.hidden =
-                false;
+                bioFull.hidden =
+                    false;
 
-            updateBiographyButtonText();
+                updateBiographyButtonText();
+            }
+
         }
-
-    });
+    );
 
 }
 
@@ -1188,7 +1209,9 @@ if (biographyLink && bioToggle && bioFull) {
 if (consultationForm) {
 
     const paidMessage =
-        document.querySelector(".form-paid-note");
+        document.querySelector(
+            ".form-paid-note"
+        );
 
     consultationForm.addEventListener(
         "focusin",
@@ -1214,20 +1237,23 @@ if (consultationForm) {
                 return;
             }
 
-            window.setTimeout(() => {
+            window.setTimeout(
+                () => {
 
-                if (
-                    !consultationForm.contains(
-                        document.activeElement
-                    )
-                ) {
+                    if (
+                        !consultationForm.contains(
+                            document.activeElement
+                        )
+                    ) {
 
-                    paidMessage.classList.remove(
-                        "highlight"
-                    );
-                }
+                        paidMessage.classList.remove(
+                            "highlight"
+                        );
+                    }
 
-            }, 50);
+                },
+                50
+            );
 
         }
     );
@@ -1264,7 +1290,6 @@ if (phoneInput) {
 
             phoneInput.value =
                 value;
-
         }
     );
 
@@ -1323,7 +1348,6 @@ contentImages.forEach((image) => {
 
             image.style.display =
                 "none";
-
         }
     );
 
@@ -1339,10 +1363,1009 @@ updateLanguage(currentLanguage);
 updateBiographyButtonText();
 
 
-/* =========================================================
-   OPTIONAL CONSOLE MESSAGE
-========================================================= */
-
 console.log(
     "Paata Shavadze website update loaded successfully."
 );
+
+
+/* =========================================================
+   SUPABASE — SUCCESSFUL CASES
+========================================================= */
+
+const PUBLIC_SUPABASE_URL =
+    "https://kloegzeotojawshbmwcm.supabase.co";
+
+const PUBLIC_SUPABASE_KEY =
+    "sb_publishable_6Y4noj5QkAlX4S7z6JVJPw_dlzDiCo0";
+
+
+let publicDb = null;
+
+
+if (window.supabase) {
+
+    publicDb =
+        window.supabase.createClient(
+            PUBLIC_SUPABASE_URL,
+            PUBLIC_SUPABASE_KEY
+        );
+
+} else {
+
+    console.error(
+        "Supabase library is not loaded."
+    );
+}
+
+
+function escapeCaseHTML(value = "") {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+async function loadPublishedCases() {
+
+    const container =
+        document.getElementById(
+            "dynamicCases"
+        );
+
+    if (!container) {
+
+        console.error(
+            "dynamicCases container not found."
+        );
+
+        return;
+    }
+
+
+    if (!publicDb) {
+
+        console.error(
+            "Supabase client is not available."
+        );
+
+        return;
+    }
+
+
+    const { data, error } =
+        await publicDb
+            .from("cases")
+            .select("*")
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Cases loading error:",
+            error
+        );
+
+        return;
+    }
+
+
+    /*
+        თუ ჯერ არცერთი გამოქვეყნებული საქმე არ არის,
+        ძველი 3 placeholder უჯრა რჩება.
+    */
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
+        console.log(
+            "No published cases. Default cards remain."
+        );
+
+        return;
+    }
+
+
+    container.innerHTML =
+        data
+            .map(
+                (item, index) => {
+
+                    const number =
+                        String(
+                            index + 1
+                        ).padStart(
+                            2,
+                            "0"
+                        );
+
+
+                    const category =
+                        escapeCaseHTML(
+                            item.category ||
+                            "საქმე"
+                        );
+
+
+                    const title =
+                        escapeCaseHTML(
+                            item.title ||
+                            ""
+                        );
+
+
+                    const description =
+                        escapeCaseHTML(
+                            item.description ||
+                            ""
+                        );
+
+
+                    const result =
+                        escapeCaseHTML(
+                            item.result ||
+                            ""
+                        );
+
+
+                    return `
+                        <article class="case-card">
+
+                            <div class="case-topline">
+
+                                <span>
+                                    ${category}
+                                </span>
+
+                                <span>
+                                    ${number}
+                                </span>
+
+                            </div>
+
+                            <h3>
+                                ${title}
+                            </h3>
+
+                            <p>
+                                ${description}
+                            </p>
+
+                            ${
+                                result
+                                    ? `
+                                        <span class="status-pill neutral">
+                                            ${result}
+                                        </span>
+                                    `
+                                    : ""
+                            }
+
+                        </article>
+                    `;
+                }
+            )
+            .join("");
+
+
+    console.log(
+        `${data.length} published case(s) loaded.`
+    );
+}
+
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadPublishedCases
+    );
+
+} else {
+
+    loadPublishedCases();
+}
+
+/* =========================================================
+   SUPABASE — ALL PUBLISHED NEWS
+========================================================= */
+
+function escapeNewsHTML(value = "") {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+async function loadPublishedNews() {
+
+    const newsCard =
+        document.getElementById("news");
+
+    if (!newsCard) {
+        console.error(
+            "News card not found."
+        );
+        return;
+    }
+
+
+    if (!publicDb) {
+        console.error(
+            "Supabase client is not available."
+        );
+        return;
+    }
+
+
+    const updatesGrid =
+        newsCard.parentElement;
+
+    if (!updatesGrid) {
+        console.error(
+            "Updates grid not found."
+        );
+        return;
+    }
+
+
+    const { data, error } =
+        await publicDb
+            .from("news")
+            .select("*")
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+        console.error(
+            "News loading error:",
+            error
+        );
+        return;
+    }
+
+
+    /*
+        თუ Admin Panel-ში ჯერ არცერთი
+        გამოქვეყნებული სიახლე არ არის,
+        ძველი News placeholder დარჩება.
+    */
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+        console.log(
+            "No published news. Default news card remains."
+        );
+        return;
+    }
+
+
+    /*
+        ვიპოვოთ ვაკანსიის ბარათი.
+        News ბარათები მის წინ ჩაჯდება.
+    */
+
+    const vacanciesCard =
+        document.getElementById(
+            "vacancies"
+        );
+
+
+    /*
+        ძველი News placeholder წავშალოთ.
+    */
+
+    newsCard.remove();
+
+
+    /*
+        თითოეული გამოქვეყნებული სიახლე
+        გადაიქცევა ცალკე ბარათად.
+    */
+
+    data.forEach(
+        (item, index) => {
+
+            const title =
+                escapeNewsHTML(
+                    item.title || ""
+                );
+
+
+            const description =
+                escapeNewsHTML(
+                    item.description || ""
+                );
+
+
+            const imageUrl =
+                item.image_url
+                    ? escapeNewsHTML(
+                        item.image_url
+                    )
+                    : "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=84";
+
+
+            const card =
+                document.createElement(
+                    "article"
+                );
+
+
+            card.className =
+                "update-card";
+
+
+            card.innerHTML = `
+
+                <div class="update-image">
+
+                    <img
+                        src="${imageUrl}"
+                        alt="${title}"
+                        loading="lazy"
+                    >
+
+                </div>
+
+
+                <div class="update-card-head">
+
+                    <span>
+                        ${String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <small>
+                        სიახლეები
+                    </small>
+
+                </div>
+
+
+                <h3>
+                    ${title}
+                </h3>
+
+
+                <p>
+                    ${description}
+                </p>
+
+
+                <span class="status-pill">
+                    გამოქვეყნებულია
+                </span>
+
+            `;
+
+
+            /*
+                თუ ვაკანსიის ბარათი არსებობს,
+                News მის წინ დაემატება.
+
+                თუ არა — Grid-ის ბოლოში.
+            */
+
+            if (
+                vacanciesCard &&
+                vacanciesCard.parentElement === updatesGrid
+            ) {
+
+                updatesGrid.insertBefore(
+                    card,
+                    vacanciesCard
+                );
+
+            } else {
+
+                updatesGrid.appendChild(
+                    card
+                );
+            }
+
+        }
+    );
+
+
+    console.log(
+        `${data.length} published news item(s) loaded.`
+    );
+}
+
+
+/* =========================================================
+   START NEWS LOADING
+========================================================= */
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        loadPublishedNews
+    );
+
+} else {
+
+    loadPublishedNews();
+}
+/* =========================================================
+   SUPABASE — ALL PUBLISHED VACANCIES
+========================================================= */
+
+async function loadPublishedVacancies() {
+
+    const vacancyCard =
+        document.getElementById("vacancies");
+
+    if (!vacancyCard) {
+        console.error("Vacancies card not found.");
+        return;
+    }
+
+    if (!publicDb) {
+        console.error(
+            "Supabase client is not available."
+        );
+        return;
+    }
+
+    const updatesGrid =
+        vacancyCard.parentElement;
+
+    if (!updatesGrid) {
+        return;
+    }
+
+
+    const { data, error } =
+        await publicDb
+            .from("vacancies")
+            .select("*")
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+        console.error(
+            "Vacancies loading error:",
+            error
+        );
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+        console.log(
+            "No published vacancies. Default vacancy card remains."
+        );
+        return;
+    }
+
+
+    vacancyCard.remove();
+
+
+    data.forEach((item) => {
+
+        const title =
+            escapeNewsHTML(
+                item.title || ""
+            );
+
+        const description =
+            escapeNewsHTML(
+                item.description || ""
+            );
+
+        const imageUrl =
+            item.image_url
+                ? escapeNewsHTML(
+                    item.image_url
+                )
+                : "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=84";
+const applicationMessage =
+    `გამარჯობა, მსურს განაცხადის გაკეთება ვაკანსიაზე: ${item.title || ""}`;
+
+const applicationUrl =
+    `https://wa.me/995599114141?text=${encodeURIComponent(applicationMessage)}`;
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+        card.className =
+            "update-card";
+
+
+        card.innerHTML = `
+
+            <div class="update-image">
+
+                <img
+                    src="${imageUrl}"
+                    alt="${title}"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="update-card-head">
+
+                <span>
+                    V
+                </span>
+
+                <small>
+                    ვაკანსიები
+                </small>
+
+            </div>
+
+
+            <h3>
+                ${title}
+            </h3>
+
+
+            <p>
+                ${description}
+            </p>
+
+
+            <span class="status-pill">
+                აქტიური ვაკანსია
+            </span>
+
+        `;
+
+
+        const publicationsCard =
+            document.getElementById(
+                "publications"
+            );
+
+
+        if (publicationsCard) {
+
+            updatesGrid.insertBefore(
+                card,
+                publicationsCard
+            );
+
+        } else {
+
+            updatesGrid.appendChild(
+                card
+            );
+        }
+
+    });
+
+
+    console.log(
+        `${data.length} published vacancy item(s) loaded.`
+    );
+}
+
+
+/* =========================================================
+   SUPABASE — ALL PUBLISHED PUBLICATIONS
+========================================================= */
+
+async function loadPublishedPublications() {
+
+    const publicationCard =
+        document.getElementById(
+            "publications"
+        );
+
+    if (!publicationCard) {
+        console.error(
+            "Publications card not found."
+        );
+        return;
+    }
+
+    if (!publicDb) {
+        console.error(
+            "Supabase client is not available."
+        );
+        return;
+    }
+
+    const updatesGrid =
+        publicationCard.parentElement;
+
+    if (!updatesGrid) {
+        return;
+    }
+
+
+    const { data, error } =
+        await publicDb
+            .from("publications")
+            .select("*")
+            .eq(
+                "is_published",
+                true
+            )
+            .order(
+                "created_at",
+                {
+                    ascending: false
+                }
+            );
+
+
+    if (error) {
+        console.error(
+            "Publications loading error:",
+            error
+        );
+        return;
+    }
+
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+        console.log(
+            "No published publications. Default publication card remains."
+        );
+        return;
+    }
+
+
+    publicationCard.remove();
+
+
+    data.forEach((item) => {
+
+        const title =
+            escapeNewsHTML(
+                item.title || ""
+            );
+
+        const description =
+            escapeNewsHTML(
+                item.description || ""
+            );
+
+        const imageUrl =
+            item.image_url
+                ? escapeNewsHTML(
+                    item.image_url
+                )
+                : "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=900&q=84";
+
+        const fileUrl =
+            item.file_url
+                ? escapeNewsHTML(
+                    item.file_url
+                )
+                : "";
+
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+        card.className =
+            "update-card";
+
+
+        card.innerHTML = `
+
+            <div class="update-image">
+
+                <img
+                    src="${imageUrl}"
+                    alt="${title}"
+                    loading="lazy"
+                >
+
+            </div>
+
+
+            <div class="update-card-head">
+
+                <span>
+                    P
+                </span>
+
+                <small>
+                    პუბლიკაცია
+                </small>
+
+            </div>
+
+
+            <h3>
+                ${title}
+            </h3>
+
+
+            <p>
+                ${description}
+            </p>
+
+
+            ${
+                fileUrl
+                    ? `
+                        <a
+                            class="status-pill"
+                            href="${fileUrl}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            პუბლიკაციის გახსნა
+                        </a>
+                    `
+                    : `
+                        <span class="status-pill">
+                            გამოქვეყნებულია
+                        </span>
+                    `
+            }
+
+        `;
+
+
+        updatesGrid.appendChild(
+            card
+        );
+
+    });
+
+
+    console.log(
+        `${data.length} published publication item(s) loaded.`
+    );
+}
+
+
+/* =========================================================
+   INITIALIZE VACANCIES + PUBLICATIONS
+========================================================= */
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+            loadPublishedVacancies();
+            loadPublishedPublications();
+        }
+    );
+
+} else {
+
+    loadPublishedVacancies();
+    loadPublishedPublications();
+}
+/* =========================================================
+   VACANCY — WHATSAPP APPLICATION BUTTON
+   საბოლოო დამატება
+========================================================= */
+
+function setupVacancyWhatsAppButtons() {
+
+    const updateCards =
+        document.querySelectorAll(
+            ".updates-grid .update-card"
+        );
+
+    updateCards.forEach((card) => {
+
+        const category =
+            card.querySelector(
+                ".update-card-head small"
+            );
+
+        if (!category) {
+            return;
+        }
+
+        const categoryText =
+            category.textContent
+                .trim()
+                .toLowerCase();
+
+        /*
+            მხოლოდ ვაკანსიის ბარათებს ვეხებით
+        */
+        if (
+            categoryText !== "ვაკანსიები" &&
+            categoryText !== "vacancies" &&
+            categoryText !== "вакансии"
+        ) {
+            return;
+        }
+
+
+        /*
+            თუ ღილაკი უკვე გაკეთებულია,
+            მეორედ აღარ ვქმნით
+        */
+        if (
+            card.querySelector(
+                ".vacancy-apply-button"
+            )
+        ) {
+            return;
+        }
+
+
+        const titleElement =
+            card.querySelector("h3");
+
+        const vacancyTitle =
+            titleElement
+                ? titleElement.textContent.trim()
+                : "ვაკანსია";
+
+
+        const oldStatus =
+            card.querySelector(
+                ".status-pill"
+            );
+
+        if (!oldStatus) {
+            return;
+        }
+
+
+        const applicationMessage =
+            `გამარჯობა, მსურს განაცხადის გაკეთება ვაკანსიაზე: ${vacancyTitle}`;
+
+
+        const applicationUrl =
+            `https://wa.me/995599114141?text=${encodeURIComponent(
+                applicationMessage
+            )}`;
+
+
+        const applyButton =
+            document.createElement("a");
+
+
+        applyButton.className =
+            "status-pill vacancy-apply-button";
+
+
+        applyButton.href =
+            applicationUrl;
+
+
+        applyButton.target =
+            "_blank";
+
+
+        applyButton.rel =
+            "noopener noreferrer";
+
+
+        applyButton.textContent =
+            "განაცხადის გაგზავნა";
+
+
+        applyButton.style.textDecoration =
+            "none";
+
+
+        oldStatus.replaceWith(
+            applyButton
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   WATCH DYNAMIC SUPABASE CONTENT
+========================================================= */
+
+const vacancyUpdatesGrid =
+    document.querySelector(
+        ".updates-grid"
+    );
+
+
+if (vacancyUpdatesGrid) {
+
+    const vacancyObserver =
+        new MutationObserver(() => {
+
+            setupVacancyWhatsAppButtons();
+
+        });
+
+
+    vacancyObserver.observe(
+        vacancyUpdatesGrid,
+        {
+            childList: true,
+            subtree: true
+        }
+    );
+
+}
+
+
+/* =========================================================
+   FIRST RUN
+========================================================= */
+
+if (
+    document.readyState === "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            setupVacancyWhatsAppButtons();
+
+        }
+    );
+
+} else {
+
+    setupVacancyWhatsAppButtons();
+
+}
