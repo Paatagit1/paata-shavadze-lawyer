@@ -202,6 +202,16 @@ const translations = {
         whatsappMessageTitle: "გამარჯობა, მსურს იურიდიული კონსულტაციის მიღება.",
 
         footerCredential: "ადვოკატი • სამართლის დოქტორი • პროფესორი • აკადემიკოსი",
+        shareTitle: "გააზიარე ვებსაიტი",
+        shareFacebook: "Facebook-ზე გაზიარება",
+        shareTikTok: "TikTok-ზე გაზიარება",
+        shareOnlineOnly: "გაზიარება სრულად იმუშავებს, როცა საიტი საჯარო მისამართზე იქნება გამოქვეყნებული.",
+        shareLocalPreview: "გარე გვერდი გაიხსნა. ყურადღება: localhost-ის ბმული სხვებისთვის მიუწვდომელია; რეალური გაზიარებისთვის საიტი საჯარო დომენზე უნდა იყოს.",
+        shareFacebookOpening: "იხსნება Facebook-ის გაზიარების ფანჯარა.",
+        sharePopupBlocked: "ბრაუზერმა ახალი ფანჯარა დაბლოკა. ნება დართე ამ საიტზე ამომხტარ ფანჯრებს.",
+        shareTikTokOpening: "გაზიარების მენიუ გაიხსნა — აირჩიე TikTok, თუ ის სიაში ჩანს.",
+        shareTikTokCopied: "ბმული დაკოპირდა. გახსენი TikTok და გამოიყენე იქ, სადაც ბმულის ჩასმა დაშვებულია.",
+        shareTikTokCopyError: "ბმულის კოპირება ვერ მოხერხდა. სცადე ვებსაიტის მისამართის ხელით დაკოპირება.",
         rights: "ყველა უფლება დაცულია.",
         legalNotice: "ვებგვერდზე განთავსებული ზოგადი ინფორმაცია არ წარმოადგენს ინდივიდუალურ სამართლებრივ კონსულტაციას."
     },    en: {
@@ -407,6 +417,16 @@ const translations = {
         whatsappMessageTitle: "Hello, I would like to request a legal consultation.",
 
         footerCredential: "Attorney • Doctor of Law • Professor • Academician",
+        shareTitle: "Share this website",
+        shareFacebook: "Share on Facebook",
+        shareTikTok: "Share for TikTok",
+        shareOnlineOnly: "Sharing will work fully once the website is published at a public address.",
+        shareLocalPreview: "The external page opened. Note: a localhost link is not accessible to others; publish the site on a public domain for real sharing.",
+        shareFacebookOpening: "Opening the Facebook sharing window.",
+        sharePopupBlocked: "The browser blocked the new window. Allow pop-ups for this website.",
+        shareTikTokOpening: "The device share menu opened — choose TikTok if it is available.",
+        shareTikTokCopied: "The link was copied. Open TikTok and use it wherever links can be added.",
+        shareTikTokCopyError: "The link could not be copied. Try copying the website address manually.",
         rights: "All rights reserved.",
         legalNotice: "General information provided on this website does not constitute individual legal advice."
     },
@@ -613,6 +633,16 @@ const translations = {
         whatsappMessageTitle: "Здравствуйте, я хотел(а) бы получить юридическую консультацию.",
 
         footerCredential: "Адвокат • Доктор права • Профессор • Академик",
+        shareTitle: "Поделиться сайтом",
+        shareFacebook: "Поделиться в Facebook",
+        shareTikTok: "Поделиться для TikTok",
+        shareOnlineOnly: "Полный доступ к публикации ссылки появится после размещения сайта по публичному адресу.",
+        shareLocalPreview: "Внешняя страница открылась. Внимание: ссылка localhost недоступна другим; для настоящего распространения разместите сайт на публичном домене.",
+        shareFacebookOpening: "Открывается окно публикации Facebook.",
+        sharePopupBlocked: "Браузер заблокировал новое окно. Разрешите всплывающие окна для этого сайта.",
+        shareTikTokOpening: "Открылось меню отправки — выберите TikTok, если он доступен в списке.",
+        shareTikTokCopied: "Ссылка скопирована. Откройте TikTok и используйте её там, где разрешено добавлять ссылки.",
+        shareTikTokCopyError: "Не удалось скопировать ссылку. Попробуйте скопировать адрес сайта вручную.",
         rights: "Все права защищены.",
         legalNotice: "Общая информация на сайте не является индивидуальной юридической консультацией."
     }
@@ -629,6 +659,9 @@ const pageProgress = document.getElementById("pageProgress");
 const backToTop = document.getElementById("backToTop");
 const consultationForm = document.getElementById("consultationForm");
 const formStatus = document.getElementById("formStatus");
+const shareStatus = document.getElementById("shareStatus");
+const shareFacebookButton = document.getElementById("shareFacebook");
+const shareTikTokButton = document.getElementById("shareTikTok");
 
 let currentLanguage = "ka";
 
@@ -680,6 +713,10 @@ function updateLanguage(language) {
         formStatus.textContent = "";
     }
 
+    if (shareStatus) {
+        shareStatus.textContent = "";
+    }
+
     try {
         localStorage.setItem("paata-website-language", language);
     } catch {
@@ -692,6 +729,114 @@ languageButtons.forEach((button) => {
         updateLanguage(button.dataset.language);
     });
 });
+
+function currentShareUrl() {
+    return window.location.href.split("#")[0];
+}
+
+function isLocalShareAddress(address) {
+    try {
+        const url = new URL(address);
+        const host = url.hostname.toLowerCase();
+        const privateIpv4 = /^(10\.|127\.|192\.168\.|169\.254\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)/.test(host);
+        return url.protocol === "file:" ||
+            host === "localhost" ||
+            host === "::1" ||
+            host.endsWith(".local") ||
+            privateIpv4;
+    } catch {
+        return true;
+    }
+}
+
+function setShareStatus(key) {
+    if (shareStatus) {
+        shareStatus.textContent = translations[currentLanguage]?.[key] || "";
+    }
+}
+
+async function copyTextToClipboard(value) {
+    if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return;
+    }
+
+    const helper = document.createElement("textarea");
+    helper.value = value;
+    helper.setAttribute("readonly", "");
+    helper.style.position = "fixed";
+    helper.style.left = "-9999px";
+    helper.style.top = "0";
+    document.body.appendChild(helper);
+    helper.select();
+
+    let copied = false;
+    try {
+        copied = document.execCommand("copy");
+    } finally {
+        helper.remove();
+    }
+
+    if (!copied) {
+        throw new Error("Clipboard access is unavailable");
+    }
+}
+
+if (shareFacebookButton) {
+    shareFacebookButton.addEventListener("click", () => {
+        const url = currentShareUrl();
+        const isLocal = isLocalShareAddress(url);
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        // Open directly from the click event even during local testing.
+        // Facebook cannot fetch a localhost URL, but opening the share dialog
+        // still lets the user verify the button and will work with the public URL.
+        const popup = window.open(shareUrl, "_blank", "width=760,height=640,scrollbars=yes,resizable=yes");
+
+        if (popup) {
+            try { popup.opener = null; } catch { /* უსაფრთხოება ბრაუზერზეა დამოკიდებული. */ }
+            setShareStatus(isLocal ? "shareLocalPreview" : "shareFacebookOpening");
+        } else {
+            setShareStatus("sharePopupBlocked");
+        }
+    });
+}
+
+if (shareTikTokButton) {
+    shareTikTokButton.addEventListener("click", async () => {
+        const url = currentShareUrl();
+        const isLocal = isLocalShareAddress(url);
+
+        // Prefer the browser/device share sheet where supported.
+        if (typeof navigator.share === "function") {
+            try {
+                await navigator.share({
+                    title: document.title,
+                    url
+                });
+                setShareStatus(isLocal ? "shareLocalPreview" : "shareTikTokOpening");
+                return;
+            } catch (error) {
+                if (error && error.name === "AbortError") {
+                    return;
+                }
+            }
+        }
+
+        // TikTok has no generic Facebook-style URL-share endpoint. If the
+        // device share sheet is unavailable, open TikTok and copy the current URL.
+        const tiktokTab = window.open("https://www.tiktok.com/", "_blank");
+        if (tiktokTab) {
+            try { tiktokTab.opener = null; } catch { /* ბრაუზერზეა დამოკიდებული. */ }
+        }
+
+        try {
+            await copyTextToClipboard(url);
+            setShareStatus(isLocal ? "shareLocalPreview" : "shareTikTokCopied");
+        } catch {
+            setShareStatus("shareTikTokCopyError");
+        }
+    });
+}
 
 function closeMobileMenu() {
     if (!mainNavigation || !mobileMenuButton) {
@@ -2369,3 +2514,1284 @@ if (
     setupVacancyWhatsAppButtons();
 
 }
+/* PAATA CMS — add only at the bottom of the EXISTING script.js. */
+(() => {
+"use strict";
+if (!window.supabase || typeof publicDb === "undefined" || !publicDb) return;
+
+const state={
+    content:new Map(),
+    media:new Map(),
+    links:new Map(),
+    settings:new Map(),
+    sections:[],
+    blocks:[],
+    blocksTableLoaded:false
+};
+
+const esc=v=>String(v??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+const lang=()=>[
+    "ka",
+    "en",
+    "ru"
+].includes(currentLanguage)
+    ?currentLanguage
+    :"ka";
+
+const c=(k,l=lang(),fb="")=>
+    state.content.has(k)
+        ?(state.content.get(k)?.[l]??"")
+        :(typeof translations!=="undefined"
+            ?translations[l]?.[k]??fb
+            :fb);
+
+const bval=(b,l,f,fb="")=>
+    b?.[l]?.[f]??fb;
+
+const bkeys={
+    mission:[
+        ["missionOneTitle","missionOneText"],
+        ["missionTwoTitle","missionTwoText"],
+        ["missionThreeTitle","missionThreeText"]
+    ],
+
+    practice:[
+        ["criminalPracticeTitle","criminalPracticeText"],
+        ["civilPracticeTitle","civilPracticeText"],
+        ["administrativePracticeTitle","administrativePracticeText"]
+    ],
+
+    resources:[
+        ["legislationTitle","legislationText"],
+        ["legalActsTitle","legalActsText"],
+        ["courtFormsTitle","courtFormsText"],
+        ["benchBarTitle","benchBarText"],
+        ["publicationsTitle","publicationsText"],
+        ["decisionsTitle","decisionsText"]
+    ],
+
+    faq:[
+        ["faqOneQuestion","faqOneAnswer"],
+        ["faqTwoQuestion","faqTwoAnswer"],
+        ["faqThreeQuestion","faqThreeAnswer"],
+        ["faqFourQuestion","faqFourAnswer"],
+        ["faqFiveQuestion","faqFiveAnswer"]
+    ],
+
+    usefulLinks:[
+        ["linkProsecutor"],
+        ["linkSupremeCourt"],
+        ["linkMia"],
+        ["linkHcoj"],
+        ["linkParliament"],
+        ["linkPresident"],
+        ["linkGovernment"],
+        ["linkPenitentiary"],
+        ["linkJustice"],
+        ["linkMfa"],
+        ["linkFinance"],
+        ["linkBar"]
+    ]
+};
+
+const imageKey=(s,i)=>
+    s==="practice"
+        ?[
+            "criminalPracticeImage",
+            "civilPracticeImage",
+            "administrativePracticeImage"
+        ][i]||""
+        :s==="resources"
+            ?`resourceImage${i+1}`
+            :"";
+
+const linkKey=(s,i)=>
+    s==="resources"
+        ?`link_${String(19+i).padStart(3,"0")}`
+        :s==="usefulLinks"
+            ?`link_${String(26+i).padStart(3,"0")}`
+            :"";
+
+const blockText=(s,b,i,l,field)=>{
+    let k=bkeys[s]?.[i]?.[
+        field==="title"
+            ?0
+            :1
+    ];
+
+    return k
+        ?c(
+            k,
+            l,
+            bval(b,l,field,"")
+        )
+        :bval(
+            b,
+            l,
+            field,
+            ""
+        );
+};
+
+function imageUrl(s,b,i){
+    let k=imageKey(s,i);
+
+    if(k&&state.media.has(k))
+        return state.media.get(k)?.url||"";
+
+    return b?.image_url||"";
+}
+
+function hrefUrl(s,b,i){
+    let k=linkKey(s,i);
+
+    if(k&&state.links.has(k))
+        return state.links.get(k)?.url||"#";
+
+    return b?.link_url||"#";
+}
+
+function setImg(img,url){
+    if(!img)
+        return;
+
+    if(url){
+        img.src=url;
+        img.style.display="";
+    }else{
+        img.removeAttribute("src");
+        img.style.display="none";
+    }
+}
+
+function applyContent(){
+    if(typeof translations!=="undefined"){
+        state.content.forEach((r,k)=>{
+            [
+                "ka",
+                "en",
+                "ru"
+            ].forEach(l=>{
+                translations[l][k]=r[l]??"";
+            });
+        });
+    }
+
+    updateLanguage(lang());
+}
+
+function applyMedia(){
+    const map={
+        brandPhoto:"#brandPhoto",
+        heroImage:".hero-media img",
+        paataPhoto:"#paataPhoto",
+
+        criminalPracticeImage:
+            "#practice .practice-grid .practice-card:nth-child(1) img",
+
+        civilPracticeImage:
+            "#practice .practice-grid .practice-card:nth-child(2) img",
+
+        administrativePracticeImage:
+            "#practice .practice-grid .practice-card:nth-child(3) img",
+
+        resourceImage1:
+            "#resources .resources-grid .resource-card:nth-child(1) img",
+
+        resourceImage2:
+            "#resources .resources-grid .resource-card:nth-child(2) img",
+
+        resourceImage3:
+            "#resources .resources-grid .resource-card:nth-child(3) img",
+
+        resourceImage4:
+            "#resources .resources-grid .resource-card:nth-child(4) img",
+
+        resourceImage5:
+            "#resources .resources-grid .resource-card:nth-child(5) img",
+
+        resourceImage6:
+            "#resources .resources-grid .resource-card:nth-child(6) img"
+    };
+
+    state.media.forEach((r,k)=>{
+        let q=map[k];
+
+        if(q)
+            setImg(
+                document.querySelector(q),
+                r.url||""
+            );
+    });
+}
+
+function applyLinks(){
+    let a=[
+        ...document.querySelectorAll("a")
+    ];
+
+    state.links.forEach((r,k)=>{
+        let m=k.match(
+            /^link_(\d+)$/
+        );
+
+        if(!m)
+            return;
+
+        let x=a[
+            Number(m[1])-1
+        ];
+
+        if(!x)
+            return;
+
+        if(r.url!==undefined)
+            x.href=r.url;
+
+        if(
+            !x.dataset.i18n &&
+            x.children.length===0 &&
+            r.label
+        ){
+            x.textContent=r.label;
+        }
+    });
+}
+
+function applySettings(){
+    let g=k=>
+        state.settings.get(k)||"";
+
+    let title=g("site_title");
+    let desc=g("meta_description");
+    let tc=g("theme_color");
+    let fav=g("favicon_url");
+    let css=g("custom_css");
+
+    let phone=g("phone");
+    let email=g("email");
+    let wa=g("whatsapp");
+
+    if(title)
+        document.title=title;
+
+    let d=document.querySelector(
+        "meta[name='description']"
+    );
+
+    if(d&&desc)
+        d.content=desc;
+
+    let t=document.querySelector(
+        "meta[name='theme-color']"
+    );
+
+    if(t&&tc)
+        t.content=tc;
+
+    if(fav){
+        let f=document.querySelector(
+            "link[rel='icon']"
+        );
+
+        if(f)
+            f.href=fav;
+    }
+
+    if(css!==undefined){
+        let s=
+            document.getElementById(
+                "paataCmsCustomCss"
+            ) ||
+            document.head.appendChild(
+                Object.assign(
+                    document.createElement("style"),
+                    {id:"paataCmsCustomCss"}
+                )
+            );
+
+        s.textContent=css;
+    }
+
+    if(phone)
+        document
+            .querySelectorAll(
+                ".topbar-contacts a[href^='tel:'],.profile-contact-list a[href^='tel:']"
+            )
+            .forEach(a=>{
+                a.href=
+                    `tel:${phone.replace(/\s/g,"")}`;
+
+                let st=a.querySelector(
+                    "strong"
+                );
+
+                if(st)
+                    st.textContent=phone;
+                else
+                    a.textContent=phone;
+            });
+
+    if(email)
+        document
+            .querySelectorAll(
+                ".topbar-contacts a[href^='mailto:'],.profile-contact-list a[href^='mailto:'],.contact-card.wide a[href^='mailto:']"
+            )
+            .forEach(a=>{
+                a.href=`mailto:${email}`;
+
+                let st=a.querySelector(
+                    "strong"
+                );
+
+                if(st)
+                    st.textContent=email;
+                else
+                    a.textContent=email;
+            });
+
+    if(wa){
+        let n=wa.replace(
+            /\D/g,
+            ""
+        );
+
+        document
+            .querySelectorAll(
+                ".hero-actions a[href*='wa.me/'],.profile-contact-list a[href*='wa.me/'],.contact-card a[href*='wa.me/']"
+            )
+            .forEach(a=>{
+                a.href=
+                    `https://wa.me/${n}`;
+            });
+    }
+
+    let ld=document.querySelector(
+        "script[type='application/ld+json']"
+    );
+
+    if(ld)
+        try{
+            let j=JSON.parse(
+                ld.textContent
+            );
+
+            if(email)
+                j.email=`mailto:${email}`;
+
+            if(phone)
+                j.telephone=phone;
+
+            if(state.content.has("address")){
+                j.address=j.address||{};
+
+                j.address.streetAddress=
+                    c("address");
+            }
+
+            ld.textContent=
+                JSON.stringify(j);
+        }catch{}
+}
+
+function renderBlock(s,b,i){
+    let l=lang();
+
+    let title=blockText(
+        s,b,i,l,"title"
+    );
+
+    let body=blockText(
+        s,b,i,l,"body"
+    );
+
+    let badge=bval(
+        b,
+        l,
+        "badge",
+        s==="practice"
+            ?c("courtPracticeLabel")
+            :""
+    );
+
+    let button=bval(
+        b,
+        l,
+        "button",
+        s==="practice"
+            ?c("contentSoon")
+            :s==="resources"
+                ?(
+                    i===4
+                        ?c("viewSection")
+                        :c("openResource")
+                )
+                :""
+    );
+
+    let n=
+        b.metadata?.number||
+        b.metadata?.code||
+        String(i+1).padStart(2,"0");
+
+    let img=imageUrl(
+        s,b,i
+    );
+
+    let url=hrefUrl(
+        s,b,i
+    );
+
+    let delay=
+        i===1
+            ?" delay-1"
+            :i>1
+                ?" delay-2"
+                :"";
+
+    if(s==="mission"){
+        let e=document.createElement(
+            "article"
+        );
+
+        e.className=
+            `mission-card reveal visible${delay}`;
+
+        e.innerHTML=`
+            ${
+                img
+                ? `
+                    <div class="cms-custom-image">
+                        <img src="${esc(img)}" alt="${esc(title)}" loading="lazy">
+                    </div>
+                `
+                : ""
+            }
+            <span class="mission-number"></span>
+            <h3></h3>
+            <p></p>
+        `;
+
+        e.querySelector(
+            ".mission-number"
+        ).textContent=n;
+
+        e.querySelector(
+            "h3"
+        ).textContent=title;
+
+        e.querySelector(
+            "p"
+        ).textContent=body;
+
+        return e;
+    }
+
+    if(s==="practice"){
+        let e=document.createElement(
+            "article"
+        );
+
+        e.className=
+            `practice-card reveal visible${delay}`;
+
+        e.innerHTML=`
+            ${
+                img
+                ?`
+                    <div class="practice-image">
+                        <img
+                            src="${esc(img)}"
+                            alt=""
+                            loading="lazy"
+                        >
+                    </div>
+                `
+                :""
+            }
+
+            <div class="practice-body">
+                <span class="practice-index"></span>
+                <p class="card-kicker"></p>
+                <h3></h3>
+                <p class="practice-copy"></p>
+                ${
+                    button
+                    ?`<span class="status-pill"></span>`
+                    :""
+                }
+            </div>
+        `;
+
+        e.querySelector(
+            ".practice-index"
+        ).textContent=n;
+
+        e.querySelector(
+            ".card-kicker"
+        ).textContent=badge;
+
+        e.querySelector(
+            "h3"
+        ).textContent=title;
+
+        e.querySelector(
+            ".practice-copy"
+        ).textContent=body;
+
+        if(
+            e.querySelector(
+                ".status-pill"
+            )
+        )
+            e.querySelector(
+                ".status-pill"
+            ).textContent=button;
+
+        return e;
+    }
+
+    if(s==="resources"){
+        let e=document.createElement(
+            "a"
+        );
+
+        e.className=
+            `resource-card reveal visible${delay}`;
+
+        e.href=url;
+
+        if(b.open_new_tab){
+            e.target="_blank";
+            e.rel=
+                "noopener noreferrer";
+        }
+
+        e.innerHTML=`
+            ${
+                img
+                ?`
+                    <div class="resource-image">
+                        <img
+                            src="${esc(img)}"
+                            alt=""
+                            loading="lazy"
+                        >
+                    </div>
+                `
+                :""
+            }
+
+            <span class="resource-code"></span>
+            <span class="resource-number"></span>
+            <h3></h3>
+            <p></p>
+            <strong></strong>
+        `;
+
+        e.querySelector(
+            ".resource-code"
+        ).textContent=
+            b.metadata?.code||"";
+
+        e.querySelector(
+            ".resource-number"
+        ).textContent=n;
+
+        e.querySelector(
+            "h3"
+        ).textContent=title;
+
+        e.querySelector(
+            "p"
+        ).textContent=body;
+
+        e.querySelector(
+            "strong"
+        ).textContent=button;
+
+        return e;
+    }
+
+    if(s==="faq"){
+        let e=document.createElement(
+            "details"
+        );
+
+        e.innerHTML=`
+            <summary></summary>
+            <p></p>
+        `;
+
+        e.querySelector(
+            "summary"
+        ).textContent=title;
+
+        e.querySelector(
+            "p"
+        ).textContent=body;
+
+        if(i===0)
+            e.open=true;
+
+        return e;
+    }
+
+    if(s==="usefulLinks"){
+        let e=document.createElement(
+            "a"
+        );
+
+        e.href=url;
+
+        e.target=
+            b.open_new_tab
+                ?"_blank"
+                :"_self";
+
+        if(b.open_new_tab)
+            e.rel=
+                "noopener noreferrer";
+
+        e.innerHTML=`
+            <span></span>
+            <strong></strong>
+        `;
+
+        e.querySelector(
+            "span"
+        ).textContent=n;
+
+        e.querySelector(
+            "strong"
+        ).textContent=title;
+
+        return e;
+    }
+
+    let e=document.createElement(
+        "article"
+    );
+
+    e.className=
+        "mission-card reveal visible";
+
+    e.innerHTML=`
+        <span class="mission-number"></span>
+        <h3></h3>
+        <p></p>
+    `;
+
+    e.querySelector(
+        ".mission-number"
+    ).textContent=n;
+
+    e.querySelector(
+        "h3"
+    ).textContent=title;
+
+    e.querySelector(
+        "p"
+    ).textContent=body;
+
+    return e;
+}
+function renderCustom(s){
+    const e = document.createElement("section");
+
+    e.id = s.id;
+
+    e.className = (
+        (s.css_class || "section")
+            .split(/\s+/)
+            .filter(Boolean)
+            .concat(["section"])
+    ).join(" ");
+
+    const ctn = document.createElement("div");
+    ctn.className = "container";
+
+    const l = lang();
+
+    const title =
+        s[`title_${l}`] ||
+        s.title_ka ||
+        s.id;
+
+    const subtitle =
+        s[`subtitle_${l}`] ||
+        s.subtitle_ka ||
+        "";
+
+    /*
+     * SECTION HEADER
+     * ვიყენებთ საიტის უკვე არსებულ კლასებს,
+     * ამიტომ დიზაინს არ ვცვლით.
+     */
+    const heading = document.createElement("div");
+    heading.className = "section-heading reveal visible";
+
+    heading.innerHTML = `
+        <div>
+            <p class="eyebrow">
+                <span></span>
+                <span class="cms-eyebrow"></span>
+            </p>
+
+            <h2 class="section-title cms-title"></h2>
+        </div>
+
+        <p class="cms-subtitle"></p>
+    `;
+
+    heading.querySelector(".cms-eyebrow").textContent = title;
+    heading.querySelector(".cms-title").textContent = title;
+    heading.querySelector(".cms-subtitle").textContent = subtitle;
+
+    ctn.appendChild(heading);
+
+    /*
+     * CUSTOM BLOCKS
+     */
+    const rows = state.blocks
+        .filter(b =>
+            b.section_id === s.id &&
+            b.is_published !== false
+        )
+        .sort((a,b) =>
+            Number(a.sort_order || 0) -
+            Number(b.sort_order || 0)
+        );
+
+    /*
+     * უნივერსალური grid.
+     * ვიყენებთ არსებულ mission-grid კლასს,
+     * რათა არსებული დიზაინის სისტემა შევინარჩუნოთ.
+     */
+    const grid = document.createElement("div");
+    grid.className = "mission-grid cms-custom-grid";
+
+    /*
+     * თუ სექციას საერთოდ არ აქვს ბლოკები,
+     * მაინც გამოჩნდეს სექცია.
+     */
+    if(!rows.length){
+
+        const empty = document.createElement("div");
+
+        empty.className = "mission-card reveal visible";
+
+        const emptyTitle = document.createElement("h3");
+        emptyTitle.textContent = title;
+
+        const emptyText = document.createElement("p");
+        emptyText.textContent = subtitle || "";
+
+        empty.appendChild(emptyTitle);
+        empty.appendChild(emptyText);
+
+        grid.appendChild(empty);
+    }
+
+    rows.forEach((b, i) => {
+
+        const data =
+            b[l] ||
+            b.ka ||
+            {};
+
+        const blockTitle =
+            data.title ||
+            data.heading ||
+            data.name ||
+            "";
+
+        const blockBody =
+            data.body ||
+            data.text ||
+            data.description ||
+            data.content ||
+            "";
+
+        const buttonText =
+            data.button ||
+            data.buttonText ||
+            "";
+
+        const image =
+            b.image_url ||
+            data.image ||
+            data.image_url ||
+            "";
+
+        const link =
+            b.link_url ||
+            data.link ||
+            data.url ||
+            "";
+
+        const number =
+            b.metadata?.number ||
+            b.metadata?.code ||
+            String(i + 1).padStart(2, "0");
+
+        /*
+         * LINK BLOCK
+         */
+        if(
+            b.type === "link" ||
+            link
+        ){
+
+            const card = document.createElement("a");
+
+            card.className =
+                "mission-card reveal visible cms-custom-card";
+
+            card.href = link || "#";
+
+            if(b.open_new_tab){
+                card.target = "_blank";
+                card.rel = "noopener noreferrer";
+            }
+
+            if(image){
+                const imgWrap =
+                    document.createElement("div");
+
+                imgWrap.className =
+                    "cms-custom-image";
+
+                const img =
+                    document.createElement("img");
+
+                img.src = image;
+                img.alt = blockTitle;
+                img.loading = "lazy";
+
+                imgWrap.appendChild(img);
+                card.appendChild(imgWrap);
+            }
+
+            const num =
+                document.createElement("span");
+
+            num.className = "mission-number";
+            num.textContent = number;
+
+            const h =
+                document.createElement("h3");
+
+            h.textContent = blockTitle;
+
+            const p =
+                document.createElement("p");
+
+            p.textContent = blockBody;
+
+            card.appendChild(num);
+            card.appendChild(h);
+            card.appendChild(p);
+
+            if(buttonText){
+
+                const strong =
+                    document.createElement("strong");
+
+                strong.textContent = buttonText;
+
+                card.appendChild(strong);
+            }
+
+            grid.appendChild(card);
+
+            return;
+        }
+
+        /*
+         * FAQ BLOCK
+         */
+        if(b.type === "faq"){
+
+            const details =
+                document.createElement("details");
+
+            details.className =
+                "cms-custom-faq";
+
+            const summary =
+                document.createElement("summary");
+
+            summary.textContent = blockTitle;
+
+            const p =
+                document.createElement("p");
+
+            p.textContent = blockBody;
+
+            details.appendChild(summary);
+            details.appendChild(p);
+
+            if(i === 0)
+                details.open = true;
+
+            grid.appendChild(details);
+
+            return;
+        }
+
+        /*
+         * IMAGE / NORMAL CARD
+         */
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "mission-card reveal visible cms-custom-card";
+
+        if(image){
+
+            const imgWrap =
+                document.createElement("div");
+
+            imgWrap.className =
+                "cms-custom-image";
+
+            const img =
+                document.createElement("img");
+
+            img.src = image;
+            img.alt = blockTitle;
+            img.loading = "lazy";
+
+            imgWrap.appendChild(img);
+
+            card.appendChild(imgWrap);
+        }
+
+        const num =
+            document.createElement("span");
+
+        num.className = "mission-number";
+        num.textContent = number;
+
+        const h =
+            document.createElement("h3");
+
+        h.textContent = blockTitle;
+
+        const p =
+            document.createElement("p");
+
+        p.textContent = blockBody;
+
+        card.appendChild(num);
+        card.appendChild(h);
+        card.appendChild(p);
+
+        if(buttonText){
+
+            const strong =
+                document.createElement("strong");
+
+            strong.textContent = buttonText;
+
+            card.appendChild(strong);
+        }
+
+        /*
+         * თუ ბლოკს აქვს ბმული,
+         * მთელ ბარათს ვაქცევთ clickable-ად.
+         */
+        if(link){
+
+            card.style.cursor = "pointer";
+
+            card.addEventListener(
+                "click",
+                () => {
+
+                    if(b.open_new_tab){
+
+                        window.open(
+                            link,
+                            "_blank",
+                            "noopener,noreferrer"
+                        );
+
+                    }else{
+
+                        window.location.href =
+                            link;
+                    }
+                }
+            );
+        }
+
+        grid.appendChild(card);
+    });
+
+    ctn.appendChild(grid);
+    e.appendChild(ctn);
+
+    return e;
+}
+
+function applySections(){
+    let main=document.getElementById(
+        "mainContent"
+    );
+
+    if(
+        !main||
+        !state.sections.length
+    )
+        return;
+
+    let existing=new Map(
+        [
+            ...main.querySelectorAll(
+                ":scope > section[id]"
+            )
+        ]
+        .map(x=>[x.id,x])
+    );
+
+    [
+        ...state.sections
+    ]
+    .sort(
+        (a,b)=>a.sort_order-b.sort_order
+    )
+    .forEach(s=>{
+        let e=existing.get(
+            s.id
+        );
+
+        if(s.is_custom){
+            let n=renderCustom(s);
+
+            n.hidden=
+                s.is_visible===false;
+
+            if(e)
+                e.replaceWith(n);
+            else
+                main.appendChild(n);
+
+            return;
+        }
+
+        if(!e)
+            return;
+
+        e.hidden=
+            s.is_visible===false;
+
+        main.appendChild(e);
+    });
+}
+
+function applyBlocks(){
+    [
+        "mission",
+        "practice",
+        "resources",
+        "faq",
+        "usefulLinks"
+    ]
+    .forEach(s=>{
+        let sec=document.getElementById(
+            s
+        );
+
+        if(!sec)
+            return;
+
+        let rows=state.blocks
+            .filter(
+                b=>
+                    b.section_id===s &&
+                    b.is_published
+            )
+            .sort(
+                (a,b)=>a.sort_order-b.sort_order
+            );
+
+        let selector={
+            mission:".mission-grid",
+            practice:".practice-grid",
+            resources:".resources-grid",
+            faq:".faq-list",
+            usefulLinks:".links-grid"
+        }[s];
+
+        let grid=sec.querySelector(
+            selector
+        );
+
+        if(!grid)
+            return;
+
+        if(!rows.length){
+            if(state.blocksTableLoaded)
+                grid.innerHTML="";
+
+            return;
+        }
+
+        grid.innerHTML="";
+
+        rows.forEach((b,i)=>{
+            grid.appendChild(
+                renderBlock(
+                    s,
+                    b,
+                    i
+                )
+            );
+        });
+    });
+}
+
+async function table(name,fn){
+    try{
+        let r=await publicDb
+            .from(name)
+            .select("*");
+
+        if(r.error)
+            throw r.error;
+
+        fn(r.data||[]);
+
+        return true;
+    }catch(e){
+        console.warn(
+            `CMS ${name}:`,
+            e.message||e
+        );
+
+        return false;
+    }
+}
+
+async function init(){
+    let r=await Promise.all([
+        table(
+            "site_content",
+            x=>
+                state.content=
+                    new Map(
+                        x.map(
+                            y=>[y.key,y]
+                        )
+                    )
+        ),
+
+        table(
+            "site_media",
+            x=>
+                state.media=
+                    new Map(
+                        x.map(
+                            y=>[y.key,y]
+                        )
+                    )
+        ),
+
+        table(
+            "site_links",
+            x=>
+                state.links=
+                    new Map(
+                        x.map(
+                            y=>[y.key,y]
+                        )
+                    )
+        ),
+
+        table(
+            "site_settings",
+            x=>
+                state.settings=
+                    new Map(
+                        x.map(
+                            y=>[y.key,y.value]
+                        )
+                    )
+        ),
+
+        table(
+            "site_sections",
+            x=>
+                state.sections=x
+        ),
+
+        table(
+            "site_blocks",
+            x=>
+                state.blocks=x
+        )
+    ]);
+
+    state.blocksTableLoaded=r[5];
+
+    if(r[0])
+        applyContent();
+
+    if(r[1])
+        applyMedia();
+
+    if(r[2])
+        applyLinks();
+
+    if(r[3])
+        applySettings();
+
+    if(r[4])
+        applySections();
+
+    if(r[5])
+        applyBlocks();
+
+    document
+        .querySelectorAll("[data-language]")
+        .forEach(x=>{
+            x.addEventListener(
+                "click",
+                ()=>setTimeout(()=>{
+                    applySections();
+                    applyBlocks();
+                },0)
+            );
+        });
+
+    try{
+        updateBiographyButtonText();
+        updateScrollUI();
+    }catch{}
+
+    console.log(
+        "Paata Shavadze CMS loaded"
+    );
+}
+
+if(
+    document.readyState==="loading"
+)
+    document.addEventListener(
+        "DOMContentLoaded",
+        init,
+        {once:true}
+    );
+else
+    init();
+
+})();
