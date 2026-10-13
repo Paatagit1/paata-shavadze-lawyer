@@ -1,0 +1,17 @@
+PAATASHAVADZE.GE — SEO UPDATE
+
+Files in this ZIP:
+- index.html: updated SEO title/description, canonical URL, social preview metadata, Attorney + WebSite structured data
+- script.js: page title and H1 optimized for Georgian/English/Russian; CMS meta description also updates Open Graph/Twitter tags
+- robots.txt: permits crawling and points crawlers to sitemap.xml
+- sitemap.xml: canonical homepage URL
+
+Deploy:
+1. Back up the current files.
+2. Replace index.html and script.js in the Paata website repository.
+3. Add/replace robots.txt and sitemap.xml at the site root.
+4. Keep style.css, images/, admin files, and all other assets unchanged.
+5. After publishing, open https://paatashavadze.ge/robots.txt and https://paatashavadze.ge/sitemap.xml to confirm they load.
+6. In Google Search Console, submit sitemap.xml and use URL Inspection on https://paatashavadze.ge/ to request indexing.
+
+SEO cannot guarantee a particular ranking or immediate appearance. Google chooses results based on many signals; keep useful, accurate, visible page content.

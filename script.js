@@ -4,7 +4,7 @@ const WHATSAPP_NUMBER = "995599114141";
 
 const translations = {
     ka: {
-        pageTitle: "პაატა შავაძე | ადვოკატი",
+        pageTitle: "პაატა შავაძე | ადვოკატი ბათუმში",
         skipLink: "მთავარ შინაარსზე გადასვლა",
         topbarNote: "კონსულტაცია წინასწარი შეთანხმებით",
         brandName: "პაატა შავაძე",
@@ -18,7 +18,7 @@ const translations = {
         headerCta: "კონსულტაცია",
 
         heroEyebrow: "დაცვა • წარმომადგენლობა • სამართლებრივი სტრატეგია",
-        heroTitle: "თქვენი უფლებების პროფესიული და თანმიმდევრული დაცვა",
+        heroTitle: "ადვოკატი ბათუმში — თქვენი უფლებების პროფესიული დაცვა",
         heroCredential: "სამართლის დოქტორი, პროფესორი, საქართველოს ეროვნული აკადემიის ნამდვილი წევრი — აკადემიკოსი",
         heroText: "ინდივიდუალური სამართლებრივი სტრატეგია, კონფიდენციალურობა და თქვენი ინტერესების პასუხისმგებლიანი წარმომადგენლობა.",
         bookConsultation: "კონსულტაციის დაჯავშნა",
@@ -215,7 +215,7 @@ const translations = {
         rights: "ყველა უფლება დაცულია.",
         legalNotice: "ვებგვერდზე განთავსებული ზოგადი ინფორმაცია არ წარმოადგენს ინდივიდუალურ სამართლებრივ კონსულტაციას."
     },    en: {
-        pageTitle: "Paata Shavadze | Attorney",
+        pageTitle: "Paata Shavadze | Attorney in Batumi",
         skipLink: "Skip to main content",
         topbarNote: "Consultations by prior appointment",
         brandName: "Paata Shavadze",
@@ -229,7 +229,7 @@ const translations = {
         headerCta: "Consultation",
 
         heroEyebrow: "Defense • Representation • Legal Strategy",
-        heroTitle: "Professional and consistent protection of your rights",
+        heroTitle: "Attorney in Batumi — professional protection of your rights",
         heroCredential: "Doctor of Law, Professor, Full Member of the Georgian National Academy — Academician",
         heroText: "Individual legal strategy, confidentiality and responsible representation of your interests.",
         bookConsultation: "Book a consultation",
@@ -432,7 +432,7 @@ const translations = {
     },
 
     ru: {
-        pageTitle: "Паата Шавадзе | Адвокат",
+        pageTitle: "Паата Шавадзе | Адвокат в Батуми",
         skipLink: "Перейти к основному содержанию",
         topbarNote: "Консультации по предварительной записи",
         brandName: "Паата Шавадзе",
@@ -446,7 +446,7 @@ const translations = {
         headerCta: "Консультация",
 
         heroEyebrow: "Защита • Представительство • Правовая стратегия",
-        heroTitle: "Профессиональная и последовательная защита ваших прав",
+        heroTitle: "Адвокат в Батуми — профессиональная защита ваших прав",
         heroCredential: "Доктор права, профессор, действительный член Национальной академии Грузии — академик",
         heroText: "Индивидуальная правовая стратегия, конфиденциальность и ответственное представительство ваших интересов.",
         bookConsultation: "Записаться на консультацию",
@@ -2878,15 +2878,35 @@ function applySettings(){
     let email=g("email");
     let wa=g("whatsapp");
 
-    if(title)
-        document.title=title;
+    if(title) {
+        let seoTitle=String(title).trim();
+        if(!/(ბათუმი|batumi|батуми)/i.test(seoTitle)) {
+            const lang=document.documentElement.lang || "ka";
+            const localSuffix={
+                ka:"ადვოკატი ბათუმში",
+                en:"Attorney in Batumi",
+                ru:"Адвокат в Батуми"
+            };
+            seoTitle += " | " + (localSuffix[lang] || localSuffix.ka);
+        }
+        document.title=seoTitle;
+        const ogTitle=document.querySelector("meta[property='og:title']");
+        const twitterTitle=document.querySelector("meta[name='twitter:title']");
+        if(ogTitle) ogTitle.content=seoTitle;
+        if(twitterTitle) twitterTitle.content=seoTitle;
+    }
 
     let d=document.querySelector(
         "meta[name='description']"
     );
 
-    if(d&&desc)
+    if(d&&desc) {
         d.content=desc;
+        const ogDescription=document.querySelector("meta[property='og:description']");
+        const twitterDescription=document.querySelector("meta[name='twitter:description']");
+        if(ogDescription) ogDescription.content=desc;
+        if(twitterDescription) twitterDescription.content=desc;
+    }
 
     let t=document.querySelector(
         "meta[name='theme-color']"
