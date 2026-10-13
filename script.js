@@ -1554,6 +1554,95 @@ function escapeCaseHTML(value = "") {
 }
 
 
+
+/* =========================================================
+   PER-ITEM SHARING — Facebook + TikTok/share-sheet + copy link
+========================================================= */
+function addItemShareActions(card, item, type, titleText) {
+    if (!card || !item) return;
+
+    const rawId = String(item.id || titleText || (type + "-" + Date.now()));
+    const slug = rawId.toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-+|-+$/g, "") || (type + "-" + Date.now());
+    const anchorId = "shared-" + type + "-" + slug;
+    card.id = anchorId;
+    card.dataset.shareTitle = String(titleText || document.title);
+
+    const actions = document.createElement("div");
+    actions.className = "item-share-actions";
+    actions.setAttribute("aria-label", "მასალის გაზიარება");
+
+    const facebook = document.createElement("button");
+    facebook.type = "button";
+    facebook.className = "item-share-button item-share-facebook";
+    facebook.textContent = "f  Facebook";
+    facebook.addEventListener("click", () => {
+        const url = window.location.origin + window.location.pathname + window.location.search + "#" + anchorId;
+        const shareUrl = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url);
+        window.open(shareUrl, "_blank", "noopener,noreferrer,width=720,height=620");
+    });
+
+    const tiktok = document.createElement("button");
+    tiktok.type = "button";
+    tiktok.className = "item-share-button item-share-tiktok";
+    tiktok.textContent = "♪  TikTok";
+    tiktok.addEventListener("click", async () => {
+        const url = window.location.origin + window.location.pathname + window.location.search + "#" + anchorId;
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: String(titleText || document.title), text: String(titleText || ""), url });
+                return;
+            }
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(url);
+                tiktok.textContent = "✓ ბმული დაკოპირდა";
+                return;
+            }
+            window.prompt("დააკოპირე მასალის ბმული:", url);
+        } catch (err) {
+            if (!err || err.name !== "AbortError") {
+                window.prompt("დააკოპირე მასალის ბმული:", url);
+            }
+        }
+    });
+
+    const copy = document.createElement("button");
+    copy.type = "button";
+    copy.className = "item-share-button item-share-copy";
+    copy.textContent = "🔗 ბმულის კოპირება";
+    copy.addEventListener("click", async () => {
+        const url = window.location.origin + window.location.pathname + window.location.search + "#" + anchorId;
+        try {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(url);
+                copy.textContent = "✓ დაკოპირდა";
+            } else {
+                window.prompt("დააკოპირე მასალის ბმული:", url);
+            }
+        } catch (_) {
+            window.prompt("დააკოპირე მასალის ბმული:", url);
+        }
+    });
+
+    actions.append(facebook, tiktok, copy);
+    card.appendChild(actions);
+}
+
+(function addItemShareStyles() {
+    if (document.getElementById("itemShareStyles")) return;
+    const style = document.createElement("style");
+    style.id = "itemShareStyles";
+    style.textContent = `
+      .item-share-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid rgba(100,116,139,.22)}
+      .item-share-button{font:inherit;font-size:.86rem;font-weight:600;line-height:1.2;border:1px solid #d5dde7;border-radius:9px;padding:9px 11px;background:#fff;color:#17324d;cursor:pointer;transition:transform .15s ease,background .15s ease}
+      .item-share-button:hover{transform:translateY(-1px);background:#f1f6fa}
+      .item-share-facebook{color:#fff;background:#1877f2;border-color:#1877f2}
+      .item-share-facebook:hover{background:#0d65d9}
+      .item-share-tiktok{color:#111;background:#fff}
+      @media(max-width:520px){.item-share-actions{gap:6px}.item-share-button{font-size:.78rem;padding:8px}}
+    `;
+    document.head.appendChild(style);
+})();
+
 async function loadPublishedCases() {
 
     const container =
@@ -1707,6 +1796,11 @@ async function loadPublishedCases() {
             )
             .join("");
 
+
+    container.querySelectorAll(".case-card").forEach((card, index) => {
+        const item = data[index];
+        addItemShareActions(card, item, "case", item && item.title ? item.title : "საქმე");
+    });
 
     console.log(
         `${data.length} published case(s) loaded.`
@@ -1914,6 +2008,8 @@ async function loadPublishedNews() {
                 </span>
 
             `;
+        addItemShareActions(card, item, "news", item.title || "მასალა");
+
 
 
             /*
@@ -2110,6 +2206,8 @@ const applicationUrl =
             </span>
 
         `;
+        addItemShareActions(card, item, "vacancy", item.title || "მასალა");
+
 
 
         const publicationsCard =
@@ -2305,6 +2403,8 @@ async function loadPublishedPublications() {
             }
 
         `;
+        addItemShareActions(card, item, "publication", item.title || "მასალა");
+
 
 
         updatesGrid.appendChild(
